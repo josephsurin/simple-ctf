@@ -7,6 +7,7 @@ import Header from './header'
 import Register from '../routes/register'
 import Login from '../routes/login'
 import Logout from '../routes/logout'
+import Challenges from '../routes/challenges'
 import NotFound from '../routes/notfound'
 
 export default class App extends Component {
@@ -41,6 +42,7 @@ export default class App extends Component {
                     <Register path="/register/" />
                     <Login path="/login/" />
                     <Logout path="/logout" />
+                    <Challenges path="/challenges" />
                     <NotFound default />
 				</Router>
 			</div>
