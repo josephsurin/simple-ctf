@@ -1,4 +1,4 @@
-const { route } = require('preact-router')
+import { route } from 'preact-router'
 
 const apiEndpoint = 'http://localhost:3000/api'
 
