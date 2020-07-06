@@ -4,7 +4,7 @@ import style from './style.sass'
 import { apiRequest } from '../../util'
 
 class Register extends Component {
-    state = { username: '', email: '', password: '' }
+    state = { username: '', email: '', password: '', msg: '' }
 
     onUsernameChange = e => {
         let { value } = e.target
@@ -26,7 +26,6 @@ class Register extends Component {
         var data = { username, email, password }
         apiRequest('/register', { method: 'POST', body: JSON.stringify(data) })
             .then(r => {
-                console.log(r)
                 if(r.err) return this.setState({ msg: r.err })
                 route('/login')
             }).catch(err => {
