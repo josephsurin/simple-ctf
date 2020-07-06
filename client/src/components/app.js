@@ -1,10 +1,12 @@
 import { h, Component } from 'preact'
 import { Router } from 'preact-router'
 
-import Header from './header'
+import { isLoggedIn } from '../util'
 
+import Header from './header'
 import Register from '../routes/register'
 import Login from '../routes/login'
+import Logout from '../routes/logout'
 import NotFound from '../routes/notfound'
 
 export default class App extends Component {
@@ -33,13 +35,14 @@ export default class App extends Component {
 	}
 
 	render() {
-        var paths = this.loggedOutPaths
+        var paths = isLoggedIn() ? this.loggedInPaths : this.loggedOutPaths
 		return (
 			<div id="app">
 				<Header paths={paths}/>
 				<Router onChange={this.handleRoute}>
                     <Register path="/register/" />
                     <Login path="/login/" />
+                    <Logout path="/logout" />
                     <NotFound default />
 				</Router>
 			</div>
