@@ -10,7 +10,7 @@ export const apiRequest = (endpoint, reqOpts, redirect='/login') => {
     return fetch(apiEndpoint + endpoint, reqOpts)
         .then(resp => resp.text())
         .then(resp => {
-            if(resp == 'Unauthorized') {
+            if(resp == 'Bad Request' || resp == 'Unauthorized') {
                 if(redirect) route(redirect)
                 return { unauthorized: true }
             }
