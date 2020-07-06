@@ -12,6 +12,7 @@ import NotFound from '../routes/notfound'
 export default class App extends Component {
     constructor() {
         super()
+        this.state = { currentUrl: '/' }
         this.loggedOutPaths = [
             { path: '/', name: 'Home' },
             { path: '/about', name: 'About' },
@@ -28,7 +29,7 @@ export default class App extends Component {
     }
 
 	handleRoute = e => {
-        this.currentUrl = e.url
+        this.setState({ currentUrl: e.url })
 	}
 
 	render() {
