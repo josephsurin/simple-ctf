@@ -1,8 +1,5 @@
-function ensureAuthenticated(req, res, next) {
-    if(req.isAuthenticated()) {
-        return next()
-    }
-    return res.end('Unauthorized')
-}
+const passport = require('passport')
+
+const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
 module.exports = { ensureAuthenticated }

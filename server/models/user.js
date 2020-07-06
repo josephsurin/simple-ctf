@@ -8,6 +8,9 @@ const userSchema = new mongoose.Schema({
     registered: { type: Date, default: Date.now }
 })
 
-userSchema.plugin(passportLocalMongoose)
+userSchema.plugin(passportLocalMongoose, {
+    usernameLowerCase: true,
+    session: false
+})
 
 module.exports = mongoose.model('User', userSchema)

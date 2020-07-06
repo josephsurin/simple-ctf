@@ -4,8 +4,12 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+mongoose.Promise = global.Promise
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const jwt = require('jsonwebtoken')
+const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
+const User = require('./models/user')
 
 const dbURI = process.env.DB_URI || 'mongodb://localhost:27017/simple-ctf'
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -21,22 +25,27 @@ function initApp() {
     app.use(cors())
     app.use(cookieParser())
     app.use(bodyParser.json())
-    app.use(require('express-session')({
-        secret: 'sup3r d00p3r S3creT S3cR37!11!',
-        resave: false,
-        saveUninitialized: false
-    }))
-    app.use(passport.initialize())
-    app.use(passport.session())
 
+    // PASSPORT AUTH
+    app.use(passport.initialize())
+    passport.use(new LocalStrategy(User.authenticate()));
+    passport.serializeUser(User.serializeUser());
+    passport.deserializeUser(User.deserializeUser());
+    const jwtOpts = {
+        secretOrKey: 'TODOchangeme',
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        algorithms: ['HS256']
+    }
+    passport.use(new JwtStrategy(jwtOpts, (payload, next) => {
+        User.findOne({ username: payload.username })
+            .then(user => next(null, user || false))
+            .catch(_ => next(null, false))
+    }))
+
+    // ROUTING
     app.use('/api', require('./routes/api'))
 
     app.use('/', express.static(path.join(__dirname, '../build'), { extensions: ['html', 'js', 'css'] }))
-
-    const User = require('./models/user')
-    passport.use(new LocalStrategy(User.authenticate()))
-    passport.serializeUser(User.serializeUser())
-    passport.deserializeUser(User.deserializeUser())
 
     app.use((_, res) => {
         res.sendFile(path.join(__dirname, '../build/index.html'))

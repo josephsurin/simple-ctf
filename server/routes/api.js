@@ -4,6 +4,7 @@ const router = express.Router()
 const passport = require('passport')
 const validator = require('email-validator')
 const User = require('../models/user')
+const JWT = require('jsonwebtoken')
 const { ensureAuthenticated } = require('../util')
 
 const staticPath = path.join(__dirname, '../../build/')
@@ -24,11 +25,13 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
-    res.json({ msg: 'Login Successful' })
+    const token = JWT.sign({ username: req.user.username }, 'TODOchangeme', { algorithm: 'HS256', expiresIn: '2d' })
+    res.json({ msg: 'Login Successful', token })
 })
 
 
 router.get('/challenges', ensureAuthenticated, (req, res) => {
+    console.log(req.user)
     res.json({ msg: 'got challenges' })
 })
 
