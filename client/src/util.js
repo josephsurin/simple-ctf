@@ -1,6 +1,8 @@
+import path from 'path'
 import { route } from 'preact-router'
 
 const apiEndpoint = 'http://localhost:3000/api'
+const staticFileRoot = 'http://localhost:3000/files'
 
 export const apiRequest = (endpoint, reqOpts, redirect='/login') => {
     var authHeader = getToken() ? { 'Authorization' : 'Bearer ' + getToken() } : {}
@@ -28,10 +30,12 @@ export const saveToken = (token) => {
     localStorage.setItem('token', token)
 }
 
-
 export const removeToken = () => {
     localStorage.removeItem('token')
 }
+
 const getToken = () => {
     return localStorage.getItem('token')
 }
+
+export const genStaticFilePath = (p) => staticFileRoot + path.join('/', p)
