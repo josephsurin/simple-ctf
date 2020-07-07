@@ -7,8 +7,12 @@ const challengeSchema = new mongoose.Schema({
     points: { type: Number, required: true },
     description: { type: String },
     files: [String],
-    solves: { type: Number, default: 0 },
+    solves: [{ user: String, time: Date }],
     flag: { type: String, required: true }
+})
+
+challengeSchema.virtual('numSolves').get(() => {
+    return this.solves.length
 })
 
 module.exports = mongoose.model('Challenge', challengeSchema)
