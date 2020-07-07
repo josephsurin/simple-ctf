@@ -1,5 +1,9 @@
 import { h, Component } from 'preact'
 import style from './style.sass'
+import markdownit from 'markdown-it'
+import DOMPurify from 'dompurify'
+
+const md = markdownit()
 
 class ChallengeCard extends Component {
     state = { isOpen: false, submission: '' }
@@ -22,8 +26,7 @@ class ChallengeCard extends Component {
                 </button>
                 {!isOpen ? null :
                 <div class={style.details}>
-                    <div class={style.description}>
-                        {description}
+                    <div class={style.description} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(md.render(description)) }}>
                     </div>
                     <div class={style.submission_container}>
                         <form class={style.submission_form}>
