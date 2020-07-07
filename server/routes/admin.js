@@ -16,7 +16,7 @@ router.post('/add', (req, res) => {
     res.end(JSON.stringify(req.user))
 })
 
-router.post('/addBuilk', upload.single('data'), (req, res) => {
+router.post('/addBulk', upload.single('data'), (req, res) => {
     tar.x({
         file: req.file.path,
         cwd: dataDir
@@ -24,7 +24,7 @@ router.post('/addBuilk', upload.single('data'), (req, res) => {
         // clean up downloaded file
         fs.unlinkSync(req.file.path)
         loadChallData(path.join(dataDir, '/challenges'))
-            .then((d) => res.json({ msg: 'Success', d }))
+            .then(d => res.json({ msg: 'Success', d }))
             .catch(err => res.json({ err }))
     })
 })
