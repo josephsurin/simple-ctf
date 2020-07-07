@@ -6,7 +6,7 @@ const validator = require('email-validator')
 const User = require('../models/user')
 const Challenge = require('../models/challenge')
 const JWT = require('jsonwebtoken')
-const { ensureAuthenticated } = require('../util')
+const { ensureAuthenticated, submitFlag } = require('../util')
 
 router.post('/register', (req, res) => {
     if(!req.body.username) return res.json({ err: 'Username cannot be empty' })
@@ -34,6 +34,12 @@ router.get('/challenges', ensureAuthenticated, (req, res) => {
             const challenges = rawChalls.map(chall => Object.assign(chall.toJSON(), { solves: null, numSolves: chall.solves.length }))
             res.json({ msg: 'got challenges', challenges })
         })
+})
+
+router.post('/submit', ensureAuthenticated, (req, res) => {
+    submitFlag(req.user, req.body.challid, req.body.submission)
+        .then(r => res.json(r))
+        .catch(err => res.json({ err }))
 })
 
 module.exports = router

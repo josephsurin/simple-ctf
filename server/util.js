@@ -1,8 +1,10 @@
 const path = require('path')
 const fs = require('fs').promises
+const { timingSafeEqual } = require('crypto')
 const { existsSync } = require('fs')
 const yaml = require('js-yaml')
 const passport = require('passport')
+const User = require('./models/user')
 const Challenge = require('./models/challenge')
 const filesDir = path.join(__dirname, './data/files/')
 
@@ -57,4 +59,39 @@ const saveChallData = (challDataDir) => {
     })
 }
 
-module.exports = { ensureAuthenticated, ensureAdmin, saveChallData }
+const submitFlag = (user, challid, submission) => {
+    return new Promise(async (res, rej) => {
+        try {
+            // check that the flag is correct
+            const challenge = await Challenge.findOne({ id: challid })
+            const submissionBuf = Buffer.from(submission)
+            const flagBuf = Buffer.from(challenge.flag)
+            if(submissionBuf.length == flagBuf.length && timingSafeEqual(submissionBuf, flagBuf)) {
+                const time = new Date()
+
+                // update the user's solves
+                const numchanged = await User.findOneAndUpdate(
+                    { username: user.username, 'solves.chall': { $ne: challid } },
+                    { $push: { solves: { chall: challid, time } } },
+                    { useFindAndModify: false })
+
+                // $ne: challid fails if user has already solved
+                if(numchanged == null) {
+                    return res({ msg: 'already solved'})
+                }
+
+                // update the chall's solves
+                challenge.solves.push({ user: user.username, time })
+                await challenge.save()
+
+                return res({ msg: 'correct' })
+            }
+
+            return res({ msg: 'incorrect' })
+        } catch(e) {
+            rej(e)
+        }
+    })
+}
+
+module.exports = { ensureAuthenticated, ensureAdmin, saveChallData, submitFlag }
