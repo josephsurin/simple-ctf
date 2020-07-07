@@ -3,12 +3,12 @@ import { h, Component } from 'preact'
 import style from './style.sass'
 import markdownit from 'markdown-it'
 import DOMPurify from 'dompurify'
-import { genStaticFilePath } from '../../util'
+import { genStaticFilePath, apiRequest } from '../../util'
 
 const md = markdownit()
 
 class ChallengeCard extends Component {
-    state = { isOpen: false, submission: '' }
+    state = { isOpen: false, submitting: false, submission: '', status: null }
 
     toggleOpen = () => {
         this.setState({ isOpen: !this.state.isOpen })
@@ -16,10 +16,21 @@ class ChallengeCard extends Component {
 
     onSubmissionChange = e => {
         let { value } = e.target
-        this.setState({ submission: value })
+        this.setState({ submission: value, status: null })
     }
 
-    render({ data }, { isOpen, submission }) {
+    submitFlag = e => {
+        e.preventDefault()
+        if(this.state.submitting) return
+        this.setState({ submitting: true }, () => {
+            let { submission } = this.state
+            var data = { challid: this.props.data.id, submission }
+            apiRequest('/submit', { method: 'POST', body: JSON.stringify(data) })
+                .then(r => this.setState({ status: r.msg, submitting: false }))
+        })
+    }
+
+    render({ data }, { isOpen, submission, status }) {
         let { id, title, category, points, description, numSolves, files } = data
         return (
             <div class={style.challenge_card}>
@@ -40,11 +51,12 @@ class ChallengeCard extends Component {
                         })}
                     </div>}
                     <div class={style.submission_container}>
-                        <form class={style.submission_form}>
+                        <form class={style.submission_form} onSubmit={this.submitFlag}>
                             <input type="text" placeholder="flag" value={submission} onInput={this.onSubmissionChange} />
                             <button type="submit">Submit</button>
                         </form>
                     </div>
+                    {status === 'incorrect' ? <div class={style.submission_incorrect}>Incorrect Flag</div> : status === 'correct' ? <div class={style.submission_correct}>Correct!</div> : status === 'already solved' ? <div class={style.submission_already_solved}>Already Solved</div> : null}
                 </div>}
             </div>
         )
