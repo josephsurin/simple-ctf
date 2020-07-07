@@ -27,7 +27,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     const token = JWT.sign({ username: req.user.username }, 'TODOchangeme', { algorithm: 'HS256', expiresIn: '2d' })
     res.json({ msg: 'Login Successful', token })
 })
-]
+
 router.get('/challenges', ensureAuthenticated, (req, res) => {
     Challenge.find({}, { flag: 0, _id: 0 })
         .then(rawChalls => {

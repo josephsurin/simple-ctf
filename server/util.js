@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs').promises
+const { existsSync } = require('fs')
 const yaml = require('js-yaml')
 const passport = require('passport')
 const Challenge = require('./models/challenge')
@@ -23,8 +24,8 @@ const saveChall = (challPath, category) => {
             const challData = Object.assign(parsedData, { category, solves: [] })
             // save files to public files static directory
             if(challData.files.length > 0) {
-                await fs.mkdir(path.join(filesDir))
-                await fs.mkdir(path.join(filesDir, challData.id))
+                if(!existsSync(filesDir)) await fs.mkdir(path.join(filesDir))
+                if(!existsSync(path.join(filesDir, challData.id))) await fs.mkdir(path.join(filesDir, challData.id))
                 await Promise.all(challData.files.map(file => fs.rename(path.join(challPath, file), path.join(filesDir, challData.id, file))))
             }
             // update the current document if exists, or create new one
