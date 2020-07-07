@@ -1,0 +1,19 @@
+# unique identifier for the challenge
+id: example
+
+title: example
+
+flag_file: ./flag
+
+points: 500
+
+description: 'example **description** should support *markdown* with `code` and maybe even
+```python
+code blocks for sure !!
+```
+
+Author: example'
+
+files:
+    - ./relative/path/to/file
+    - ./that/the/user/is/provided

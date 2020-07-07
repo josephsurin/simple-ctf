@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
     username: { type: String, index: true },
     password: { type: String },
     email: { type: String, unique: true },
-    registered: { type: Date, default: Date.now }
+    registered: { type: Date, default: Date.now },
+    admin: { type: Boolean, default: false }
 })
 
 userSchema.plugin(passportLocalMongoose, {

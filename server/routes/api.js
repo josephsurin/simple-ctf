@@ -7,8 +7,6 @@ const User = require('../models/user')
 const JWT = require('jsonwebtoken')
 const { ensureAuthenticated } = require('../util')
 
-const staticPath = path.join(__dirname, '../../build/')
-
 router.post('/register', (req, res) => {
     if(!req.body.username) return res.json({ err: 'Username cannot be empty' })
     if(!req.body.email || !validator.validate(req.body.email)) return res.json({ err: 'Invalid email' })

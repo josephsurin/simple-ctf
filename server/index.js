@@ -44,6 +44,7 @@ function initApp() {
 
     // ROUTING
     app.use('/api', require('./routes/api'))
+    app.use('/admin', require('./routes/admin'))
 
     app.use('/', express.static(path.join(__dirname, '../build'), { extensions: ['html', 'js', 'css'] }))
 
