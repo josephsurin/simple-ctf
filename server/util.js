@@ -94,4 +94,8 @@ const submitFlag = (user, challid, submission) => {
     })
 }
 
-module.exports = { ensureAuthenticated, ensureAdmin, saveChallData, submitFlag }
+const hasSolved = (user, challid) => {
+    return user.solves.findIndex(solve => solve.chall == challid) >= 0
+}
+
+module.exports = { ensureAuthenticated, ensureAdmin, saveChallData, submitFlag, hasSolved }
