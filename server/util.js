@@ -123,8 +123,8 @@ const getLeaderboard = () => {
             const challMap = {}
             challData.forEach(c => challMap[c.id] = c)
             allUserSolves.sort((a, b) => {
-                var aT = getTotalPoints(a.solves, challMap)
-                var bT = getTotalPoints(b.solves, challMap)
+                var aT = getTotalPoints(a, challMap)
+                var bT = getTotalPoints(b, challMap)
                 if(bT > aT) return 1
                 if(bT < aT) return -1
                 // points are equal, so compare the latest completion time
@@ -144,9 +144,9 @@ const getProfile = (user) => {
     return new Promise(async (res, rej) => {
         try {
             const leaderboard = await getLeaderboard()
-            var position = leaderboard.findIndex(({ username }) => username == user.id) + 1
+            var position = leaderboard.findIndex(({ username }) => username == user.username) + 1
             var challenges = await getChallenges()
-            challenges = challenges.map(({ id, points, category }) => { return { id, points, category } })
+            challenges = challenges.map(({ id, title, points, category }) => { return { id, title, points, category } })
             var userData = { username: user.username, email: user.email }
             return res({ userData, position, solves: user.solves, challenges })
         } catch(e) {

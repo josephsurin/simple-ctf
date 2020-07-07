@@ -1,0 +1,30 @@
+@import '../../style/vars'
+@import '../../style/common'
+
+.profile
+  display: flex
+  flex-direction: column
+  width: 60%
+  margin: 20px auto
+  color: $text-grey
+  text-align: center
+  @media (max-width: 768px)
+    width: 96%
+    margin-left: 2%
+  .username, .position
+    font-family: 'Source Sans Pro' 
+    font-weight: 700
+    font-size: 2.6em
+  .position
+    font-size: 1.8em
+    font-weight: 400
+    margin: 16px 0
+  table
+    width: 100%
+    border-spacing: 0
+    background: $grey2
+    border-radius: 3px
+  th
+    border-bottom: 1px solid $grey
+  th, td
+    padding: 10px 6px

@@ -8,6 +8,7 @@ import Register from '../routes/register'
 import Login from '../routes/login'
 import Logout from '../routes/logout'
 import Challenges from '../routes/challenges'
+import Profile from '../routes/profile'
 import NotFound from '../routes/notfound'
 
 export default class App extends Component {
@@ -43,6 +44,7 @@ export default class App extends Component {
                     <Login path="/login/" />
                     <Logout path="/logout" />
                     <Challenges path="/challenges" />
+                    <Profile path="/profile" />
                     <NotFound default />
 				</Router>
 			</div>
