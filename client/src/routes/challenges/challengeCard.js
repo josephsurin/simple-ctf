@@ -26,16 +26,20 @@ class ChallengeCard extends Component {
             let { submission } = this.state
             var data = { challid: this.props.data.id, submission }
             apiRequest('/submit', { method: 'POST', body: JSON.stringify(data) })
-                .then(r => this.setState({ status: r.msg, submitting: false }))
+                .then(r => {
+                    if(r.msg == 'correct') this.props.onSolve()
+                    this.setState({ status: r.msg, submitting: false })
+                })
         })
     }
 
     render({ data }, { isOpen, submission, status }) {
-        let { id, title, category, points, description, numSolves, files } = data
+        let { id, title, category, points, description, numSolves, files, solved } = data
         return (
             <div class={style.challenge_card}>
                 <button class={style.main_details} onClick={this.toggleOpen}>
                     {title} / {category} / {points} {points === 1 ? 'point' : 'points'} / {numSolves} {numSolves === 1 ? 'solve' : 'solves'}
+                    {solved ? <span class={style.solved_indicator}>Solved</span> : null}
                 </button>
                 {!isOpen ? null :
                 <div class={style.details}>

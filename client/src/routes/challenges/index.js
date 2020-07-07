@@ -9,6 +9,10 @@ class Challenges extends Component {
     state = { challenges: null }
 
     componentDidMount() {
+        this.loadData()
+    }
+
+    loadData = () => {
         apiRequest('/challenges')
             .then(r => this.setState({ challenges: r.challenges }))
     }
@@ -19,7 +23,7 @@ class Challenges extends Component {
             <div class={style.challenges}>
                 <div class={style.challenges_container}>
                     {!challenges ? <Loader /> :
-                    challenges.map(c => <ChallengeCard data={c} />)}
+                    challenges.map(c => <ChallengeCard data={c} onSolve={this.loadData} />)}
                 </div>
             </div>
         )
