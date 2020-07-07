@@ -6,7 +6,7 @@ const validator = require('email-validator')
 const User = require('../models/user')
 const Challenge = require('../models/challenge')
 const JWT = require('jsonwebtoken')
-const { ensureAuthenticated, submitFlag, hasSolved } = require('../util')
+const { ensureAuthenticated, submitFlag, hasSolved, getChallenges, getProfile } = require('../util')
 
 router.post('/register', (req, res) => {
     if(!req.body.username) return res.json({ err: 'Username cannot be empty' })
@@ -29,15 +29,22 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 })
 
 router.get('/challenges', ensureAuthenticated, (req, res) => {
-    Challenge.find({}, { flag: 0, _id: 0 })
+    getChallenges()
         .then(rawChalls => {
             const challenges = rawChalls.map(chall => Object.assign(chall.toJSON(), { solves: null, numSolves: chall.solves.length, solved: hasSolved(req.user, chall.id) }))
             res.json({ msg: 'got challenges', challenges })
         })
+        .catch(err => res.json({ err }))
 })
 
 router.post('/submit', ensureAuthenticated, (req, res) => {
     submitFlag(req.user, req.body.challid, req.body.submission)
+        .then(r => res.json(r))
+        .catch(err => res.json({ err }))
+})
+
+router.get('/profile', ensureAuthenticated, (req, res) => {
+    getProfile(req.user)
         .then(r => res.json(r))
         .catch(err => res.json({ err }))
 })

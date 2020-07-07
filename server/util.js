@@ -4,6 +4,9 @@ const { timingSafeEqual } = require('crypto')
 const { existsSync } = require('fs')
 const yaml = require('js-yaml')
 const passport = require('passport')
+const NodeCache = require('node-cache')
+const cache = new NodeCache({ stdTTL: 10, useClones: false })
+
 const User = require('./models/user')
 const Challenge = require('./models/challenge')
 const filesDir = path.join(__dirname, './data/files/')
@@ -23,7 +26,7 @@ const saveChall = (challPath, category) => {
         try {
             const rawChallData = await fs.readFile(path.join(challPath, 'challenge.yml'))
             const parsedData = yaml.safeLoad(rawChallData)
-            const challData = Object.assign(parsedData, { category, solves: [] })
+            const challData = Object.assign(parsedData, { category })
             // save files to public files static directory
             if(challData.files.length > 0) {
                 if(!existsSync(filesDir)) await fs.mkdir(path.join(filesDir))
@@ -57,6 +60,14 @@ const saveChallData = (challDataDir) => {
             .then(res)
             .catch(rej)
     })
+}
+
+const getChallenges = async () => {
+    var rawChalls = cache.get('challenges')
+    if(rawChalls != undefined) return rawChalls
+    rawChalls = await Challenges.find({}, { _id: 0, flag: 0 })
+    cache.set('challenges', rawChalls, 60)
+    return rawChalls
 }
 
 const submitFlag = (user, challid, submission) => {
@@ -98,4 +109,49 @@ const hasSolved = (user, challid) => {
     return user.solves.findIndex(solve => solve.chall == challid) >= 0
 }
 
-module.exports = { ensureAuthenticated, ensureAdmin, saveChallData, submitFlag, hasSolved }
+const getTotalPoints = (user, challMap) => {
+    return user.solves.reduce((a, v) => a + challMap[v.chall].points, 0)
+}
+
+const getLeaderboard = () => {
+    return new Promise(async (res, rej) => {
+        try {
+            var leaderboard = cache.get('leaderboard')
+            if(leaderboard != undefined) return res(leaderboard)
+            const allUserSolves = await User.find({}, { _id: 0, username: 1, solves: 1 })
+            const challData = await Challenge.find({}, { _id: 0, id: 1, points: 1 })
+            const challMap = {}
+            challData.forEach(c => challMap[c.id] = c)
+            allUserSolves.sort((a, b) => {
+                var aT = getTotalPoints(a.solves, challMap)
+                var bT = getTotalPoints(b.solves, challMap)
+                if(bT > aT) return 1
+                if(bT < aT) return -1
+                // points are equal, so compare the latest completion time
+                var at = Math.max(...a.solves.map(({ time }) => new Date(time).getTime()))
+                var bt = Math.max(...b.solves.map(({ time }) => new Date(time).getTime()))
+                return at - bt
+            })
+            cache.set('leaderboard', allUserSolves)
+            return res(allUserSolves)
+        } catch(e) {
+            rej(e)
+        }
+    })
+}
+
+const getProfile = (user) => {
+    return new Promise(async (res, rej) => {
+        try {
+            const leaderboard = await getLeaderboard()
+            var position = leaderboard.findIndex(({ username }) => username == user.id) + 1
+            var challenges = await getChallenges()
+            challenges = challenges.map(({ id, points, category }) => { return { id, points, category } })
+            return res({ position, solves: user.solves, challenges })
+        } catch(e) {
+            rej(e)
+        }
+    })
+}
+
+module.exports = { ensureAuthenticated, ensureAdmin, saveChallData, getChallenges, submitFlag, hasSolved, getProfile }
