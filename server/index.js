@@ -7,7 +7,6 @@ const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
-const jwt = require('jsonwebtoken')
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
 const User = require('./models/user')
 
@@ -47,6 +46,8 @@ function initApp() {
     app.use('/admin', require('./routes/admin'))
 
     app.use('/', express.static(path.join(__dirname, '../build'), { extensions: ['html', 'js', 'css'] }))
+
+    app.use('/files', express.static(path.join(__dirname, './data/files/')))
 
     app.use((_, res) => {
         res.sendFile(path.join(__dirname, '../build/index.html'))

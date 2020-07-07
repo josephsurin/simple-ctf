@@ -3,6 +3,7 @@ const fs = require('fs').promises
 const yaml = require('js-yaml')
 const passport = require('passport')
 const Challenge = require('./models/challenge')
+const filesDir = path.join(__dirname, './data/files/')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
@@ -20,6 +21,12 @@ const saveChall = (challPath, category) => {
             const rawChallData = await fs.readFile(path.join(challPath, 'challenge.yml'))
             const parsedData = yaml.safeLoad(rawChallData)
             const challData = Object.assign(parsedData, { category })
+            // save files to public files static directory
+            if(challData.files.length > 0) {
+                await fs.mkdir(path.join(filesDir))
+                await fs.mkdir(path.join(filesDir, challData.id))
+                await Promise.all(challData.files.map(file => fs.rename(path.join(challPath, file), path.join(filesDir, challData.id, file))))
+            }
             // update the current document if exists, or create new one
             const challenge = await Challenge.findOneAndUpdate({ id: challData.id }, challData, { upsert: true, useFindAndModify: false })
             return res(challenge)
