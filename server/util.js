@@ -5,7 +5,7 @@ const { existsSync } = require('fs')
 const yaml = require('js-yaml')
 const passport = require('passport')
 const NodeCache = require('node-cache')
-const cache = new NodeCache({ stdTTL: 10, useClones: false })
+const cache = new NodeCache({ stdTTL: 5, useClones: false })
 
 const User = require('./models/user')
 const Challenge = require('./models/challenge')
@@ -66,7 +66,7 @@ const getChallenges = async () => {
     var rawChalls = cache.get('challenges')
     if(rawChalls != undefined) return rawChalls
     rawChalls = await Challenge.find({}, { _id: 0, flag: 0 })
-    cache.set('challenges', rawChalls, 60)
+    cache.set('challenges', rawChalls)
     return rawChalls
 }
 
