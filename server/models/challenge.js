@@ -7,6 +7,7 @@ const challengeSchema = new mongoose.Schema({
     points: { type: Number, required: true },
     description: { type: String },
     files: [String],
+    solves: { type: Number, default: 0 },
     flag: { type: String, required: true }
 })
 
