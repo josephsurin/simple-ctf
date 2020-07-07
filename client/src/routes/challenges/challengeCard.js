@@ -14,11 +14,11 @@ class ChallengeCard extends Component {
     }
 
     render({ data }, { isOpen, submission }) {
-        let { title, category, points, description, solves, files } = data
+        let { title, category, points, description, numSolves, files } = data
         return (
             <div class={style.challenge_card}>
                 <button class={style.main_details} onClick={this.toggleOpen}>
-                    {title} / {category} / {points} {points === 1 ? 'point' : 'points'} / {solves} {solves === 1 ? 'solve' : 'solves'}
+                    {title} / {category} / {points} {points === 1 ? 'point' : 'points'} / {numSolves} {numSolves === 1 ? 'solve' : 'solves'}
                 </button>
                 {!isOpen ? null :
                 <div class={style.details}>
