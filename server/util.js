@@ -65,7 +65,7 @@ const saveChallData = (challDataDir) => {
 const getChallenges = async () => {
     var rawChalls = cache.get('challenges')
     if(rawChalls != undefined) return rawChalls
-    rawChalls = await Challenges.find({}, { _id: 0, flag: 0 })
+    rawChalls = await Challenge.find({}, { _id: 0, flag: 0 })
     cache.set('challenges', rawChalls, 60)
     return rawChalls
 }
@@ -147,7 +147,8 @@ const getProfile = (user) => {
             var position = leaderboard.findIndex(({ username }) => username == user.id) + 1
             var challenges = await getChallenges()
             challenges = challenges.map(({ id, points, category }) => { return { id, points, category } })
-            return res({ position, solves: user.solves, challenges })
+            var userData = { username: user.username, email: user.email }
+            return res({ userData, position, solves: user.solves, challenges })
         } catch(e) {
             rej(e)
         }
