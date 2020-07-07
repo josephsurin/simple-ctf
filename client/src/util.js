@@ -12,6 +12,7 @@ export const apiRequest = (endpoint, reqOpts, redirect='/login') => {
         .then(resp => {
             if(resp == 'Bad Request' || resp == 'Unauthorized') {
                 if(redirect) route(redirect)
+                removeToken()
                 return { unauthorized: true }
             }
             return JSON.parse(resp)
