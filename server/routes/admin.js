@@ -16,7 +16,7 @@ router.post('/add', (req, res) => {
     res.end(JSON.stringify(req.user))
 })
 
-router.post('/addBulk', upload.single('data'), (req, res) => {
+router.post('/addChalls', upload.single('data'), (req, res) => {
     tar.x({
         file: req.file.path,
         cwd: dataDir
