@@ -9,10 +9,9 @@ const challengeSchema = new mongoose.Schema({
     files: [String],
     solves: [{ user: String, time: Date }],
     flag: { type: String, required: true }
-})
-
-challengeSchema.virtual('numSolves').get(() => {
-    return this.solves.length
+}, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
 })
 
 module.exports = mongoose.model('Challenge', challengeSchema)

@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const tar = require('tar')
 const multer = require('multer')
-const { ensureAuthenticated, ensureAdmin, loadChallData } = require('../util')
+const { ensureAuthenticated, ensureAdmin, saveChallData } = require('../util')
 
 const dataDir = path.join(__dirname, '../data')
 const upload = multer({ dest: dataDir })
@@ -23,7 +23,7 @@ router.post('/addChalls', upload.single('data'), (req, res) => {
     }, ['challenges']).then(() => {
         // clean up downloaded file
         fs.unlinkSync(req.file.path)
-        loadChallData(path.join(dataDir, '/challenges'))
+        saveChallData(path.join(dataDir, '/challenges'))
             .then(d => res.json({ msg: 'Success', d }))
             .catch(err => res.json({ err }))
     })
