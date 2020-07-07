@@ -7,10 +7,23 @@ flag: "FLAG{bob}"
 
 points: 200
 
-description: 'the flag is my name
+description: 'the flag is my name \
+trying out new lines and also **markdown** kinda *forgot* about that \
+<br/>
 
 remember to wrap in `FLAG{}`
 
+am i on \
+two lines?
+----
+how about <br/>
+me!?
+----
+ok fine how about
+
+
+meeee
+----
 Author: me'
 
 files:
