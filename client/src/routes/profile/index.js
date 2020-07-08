@@ -12,6 +12,8 @@ class Profile extends Component {
         this.loadData()
     }
 
+    sumPoints = (solves, challenges) => solves.reduce((a, v) => a + challenges.find(chall => chall.id == v.chall).points, 0)
+
     loadData = () => {
         var username = this.props.username
         apiRequest('/profile' + (username ? '/' + username : ''))
@@ -52,11 +54,14 @@ class Profile extends Component {
             )
         }
         let { userData, position, solves, challenges } = data
+        var totalPoints = this.sumPoints(solves, challenges)
         return (
             <div class={style.profile}>
                 <div class={style.username}>{userData.username}</div>
                 <div class={style.position}>{ordinal(position)} place</div>
+                <div class={style.total_points}>{totalPoints} {totalPoints === 1 ? 'point' : 'points'}</div>
                 
+                <h3>Solves</h3>
                 {this.formatSolves(solves, challenges)}
             </div>
         )
