@@ -4,6 +4,7 @@ const express = require('express')
 const router = express.Router()
 const tar = require('tar')
 const multer = require('multer')
+const rimraf = require('rimraf')
 const { ensureAuthenticated, ensureAdmin, saveChallData } = require('../util')
 
 const dataDir = path.join(__dirname, '../data')
@@ -23,8 +24,12 @@ router.post('/addChalls', upload.single('data'), (req, res) => {
     }, ['challenges']).then(() => {
         // clean up downloaded file
         fs.unlinkSync(req.file.path)
-        saveChallData(path.join(dataDir, '/challenges'))
-            .then(d => res.json({ msg: 'Success', d }))
+        var challDataDir = path.join(dataDir, '/challenges')
+        saveChallData(challDataDir)
+            .then(d => {
+                rimraf.sync(challDataDir)
+                return res.json({ msg: 'Success', d })
+            })
             .catch(err => res.json({ err }))
     })
 })
