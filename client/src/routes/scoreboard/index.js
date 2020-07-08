@@ -1,4 +1,5 @@
 import { h, Component } from 'preact'
+import { Link } from 'preact-router'
 import style from './style.sass'
 
 import { apiRequest } from '../../util'
@@ -33,7 +34,7 @@ class Scoreboard extends Component {
             {standings.map(({ username, points, lastSolve }, i) => 
                 <tr>
                     <td>{offset + i + 1}</td>
-                    <td>{username}</td>
+                    <td><Link href={'/profile/' + username}>{username}</Link></td>
                     <td>{points}</td>
                     <td>{lastSolve ? new Date(lastSolve).toLocaleString() : '-'}</td>
                 </tr>
