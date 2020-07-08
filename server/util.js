@@ -115,28 +115,27 @@ const getTotalPoints = (user, challMap) => {
 
 const getLeaderboard = () => {
     return new Promise(async (res, rej) => {
-        try {
             var leaderboard = cache.get('leaderboard')
             if(leaderboard != undefined) return res(leaderboard)
-            const allUserSolves = await User.find({}, { _id: 0, username: 1, solves: 1 })
             const challData = await Challenge.find({}, { _id: 0, id: 1, points: 1 })
             const challMap = {}
             challData.forEach(c => challMap[c.id] = c)
+            var allUserSolves = await User.find({}, { _id: 0, username: 1, solves: 1 })
+            allUserSolves = allUserSolves.map(u => {
+                return {
+                    username: u.username,
+                    points: getTotalPoints(u, challMap),
+                    lastSolve: Math.max(...u.solves.map(({ time }) => new Date(time).getTime()))
+                }
+            })
             allUserSolves.sort((a, b) => {
-                var aT = getTotalPoints(a, challMap)
-                var bT = getTotalPoints(b, challMap)
-                if(bT > aT) return 1
-                if(bT < aT) return -1
+                if(b.points > a.points) return 1
+                if(b.points < a.points) return -1
                 // points are equal, so compare the latest completion time
-                var at = Math.max(...a.solves.map(({ time }) => new Date(time).getTime()))
-                var bt = Math.max(...b.solves.map(({ time }) => new Date(time).getTime()))
-                return at - bt
+                return a.lastSolve - b.lastSolve
             })
             cache.set('leaderboard', allUserSolves)
             return res(allUserSolves)
-        } catch(e) {
-            rej(e)
-        }
     })
 }
 
@@ -155,4 +154,4 @@ const getProfile = (user) => {
     })
 }
 
-module.exports = { ensureAuthenticated, ensureAdmin, saveChallData, getChallenges, submitFlag, hasSolved, getProfile }
+module.exports = { ensureAuthenticated, ensureAdmin, saveChallData, getChallenges, submitFlag, hasSolved, getProfile, getLeaderboard }

@@ -4,9 +4,8 @@ const router = express.Router()
 const passport = require('passport')
 const validator = require('email-validator')
 const User = require('../models/user')
-const Challenge = require('../models/challenge')
 const JWT = require('jsonwebtoken')
-const { ensureAuthenticated, submitFlag, hasSolved, getChallenges, getProfile } = require('../util')
+const { ensureAuthenticated, submitFlag, hasSolved, getChallenges, getProfile, getLeaderboard } = require('../util')
 
 router.post('/register', (req, res) => {
     if(!req.body.username) return res.json({ err: 'Username cannot be empty' })
@@ -46,6 +45,24 @@ router.post('/submit', ensureAuthenticated, (req, res) => {
 router.get('/profile', ensureAuthenticated, (req, res) => {
     getProfile(req.user)
         .then(r => res.json(r))
+        .catch(err => res.json({ err }))
+})
+
+router.get('/scoreboard', (req, res) => {
+    getLeaderboard()
+        .then(standings => {
+            const perpage = 1
+            var page = req.query.page || 0
+            var count = standings.length
+            var numPages = Math.ceil(count/perpage)
+            page = Math.min(page, numPages)
+            res.json({
+                offset: perpage*page,
+                numPages,
+                page,
+                standings: standings.slice(page*perpage, (page+1)*perpage)
+            })
+        })
         .catch(err => res.json({ err }))
 })
 
