@@ -55,14 +55,12 @@ class Scoreboard extends Component {
 
     render(_, { standings, offset, page, numPages }) {
         console.log(standings, offset)
+        if(!standings) return <Loader />
         return (
             <div class={style.scoreboard}>
                 <h1>Scoreboard</h1>
-            {standings == null ? <Loader /> :
-            <div>
                 {this.formatStandings(standings, offset)}
                 {this.formatPagination(page, numPages)}
-            </div>}
             </div>
         )
     }

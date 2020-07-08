@@ -46,13 +46,7 @@ class Profile extends Component {
 
     render(_, { data }) {
         console.log(data)
-        if(!data) {
-            return (
-                <div class={style.profile}>
-                    <Loader />
-                </div>
-            )
-        }
+        if(!data) return <Loader />
         let { userData, position, solves, challenges } = data
         var totalPoints = this.sumPoints(solves, challenges)
         return (
