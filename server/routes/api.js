@@ -51,7 +51,7 @@ router.get('/profile', ensureAuthenticated, (req, res) => {
 router.get('/scoreboard', (req, res) => {
     getLeaderboard()
         .then(standings => {
-            const perpage = 1
+            const perpage = 100
             var page = req.query.page || 0
             var count = standings.length
             var numPages = Math.ceil(count/perpage)
