@@ -33,7 +33,7 @@ class ChallengeCard extends Component {
         })
     }
 
-    render({ data }, { isOpen, submission, status }) {
+    render({ data }, { isOpen, submitting, submission, status }) {
         let { id, title, category, points, description, numSolves, files, solved } = data
         return (
             <div class={style.challenge_card}>
@@ -56,11 +56,14 @@ class ChallengeCard extends Component {
                     </div>}
                     <div class={style.submission_container}>
                         <form class={style.submission_form} onSubmit={this.submitFlag}>
-                            <input type="text" placeholder="flag" value={submission} onInput={this.onSubmissionChange} />
-                            <button type="submit">Submit</button>
+                            <input class={submitting ? style.disabled : ''} type="text" placeholder="flag" value={submission} onInput={this.onSubmissionChange} />
+                            <button class={submitting ? style.disabled : ''} type="submit">Submit</button>
                         </form>
                     </div>
-                    {status === 'incorrect' ? <div class={style.submission_incorrect}>Incorrect Flag</div> : status === 'correct' ? <div class={style.submission_correct}>Correct!</div> : status === 'already solved' ? <div class={style.submission_already_solved}>Already Solved</div> : null}
+                    {status === 'incorrect' ? <div class={style.submission_incorrect}>Incorrect Flag</div> :
+                     status === 'correct' ? <div class={style.submission_correct}>Correct!</div> :
+                     status === 'already solved' ? <div class={style.submission_already_solved}>Already Solved</div> :
+                     status === 'rate limited' ? <div class={style.submission_incorrect}>Submitting too fast. Slow down!</div> : null}
                 </div>}
             </div>
         )
