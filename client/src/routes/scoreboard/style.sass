@@ -1,0 +1,28 @@
+@import '../../style/vars'
+@import '../../style/common'
+
+.scoreboard
+  width: 60%
+  margin-left: 20%
+  text-align: center
+  color: $text-grey
+  @media (max-width: 768px)
+    width: 96%
+    margin-left: 2%
+  h1
+    color: $text-grey
+    text-align: center
+
+.pagination_container
+  margin-top: 24px
+  .page_button, .current_page
+    padding: 4px 8px
+    color: $text-grey
+    border-radius: 3px
+    margin: 0 2px
+  .page_button
+    &:hover
+      cursor: pointer
+      background: $grey2
+  .current_page
+    background: $blue

@@ -9,6 +9,7 @@ import Login from '../routes/login'
 import Logout from '../routes/logout'
 import Challenges from '../routes/challenges'
 import Profile from '../routes/profile'
+import Scoreboard from '../routes/scoreboard'
 import NotFound from '../routes/notfound'
 
 export default class App extends Component {
@@ -17,7 +18,7 @@ export default class App extends Component {
         this.state = { currentUrl: '/' }
         this.loggedOutPaths = [
             { path: '/', name: 'Home' },
-            { path: '/about', name: 'About' },
+            { path: '/scoreboard', name: 'Scoreboard' },
             { path: '/register', name: 'Register' },
             { path: '/login', name: 'Login' }
         ]
@@ -25,6 +26,7 @@ export default class App extends Component {
         this.loggedInPaths = [
             { path: '/', name: 'Home' },
             { path: '/challenges', name: 'Challenges' },
+            { path: '/scoreboard', name: 'Scoreboard' },
             { path: '/profile', name: 'Profile' },
             { path: '/logout', name: 'Logout' }
         ]
@@ -45,6 +47,7 @@ export default class App extends Component {
                     <Logout path="/logout" />
                     <Challenges path="/challenges" />
                     <Profile path="/profile" />
+                    <Scoreboard path="/scoreboard" />
                     <NotFound default />
 				</Router>
 			</div>
