@@ -9,6 +9,7 @@ const cache = new NodeCache({ stdTTL: 5, useClones: false })
 
 const User = require('./models/user')
 const Challenge = require('./models/challenge')
+const Submission = require('./models/submission')
 const filesDir = path.join(__dirname, './data/files/')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
@@ -73,13 +74,18 @@ const getChallenges = async () => {
 const submitFlag = (user, challid, submission) => {
     return new Promise(async (res, rej) => {
         try {
+            const time = new Date()
+
+            const s = new Submission({ user: user.username, chall: challid, submission, time })
+            s.save()
+                .then(() => console.log('[SUBMISSION]', user.username, 'submitted', '"' + submission + '"', 'for chall', challid))
+                .catch(console.log)
+
             // check that the flag is correct
             const challenge = await Challenge.findOne({ id: challid })
             const submissionBuf = Buffer.from(submission)
             const flagBuf = Buffer.from(challenge.flag)
             if(submissionBuf.length == flagBuf.length && timingSafeEqual(submissionBuf, flagBuf)) {
-                const time = new Date()
-
                 // update the user's solves
                 const numchanged = await User.findOneAndUpdate(
                     { username: user.username, 'solves.chall': { $ne: challid } },

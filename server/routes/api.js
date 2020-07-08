@@ -10,7 +10,8 @@ const { ensureAuthenticated, submitFlag, hasSolved, getChallenges, getProfile, g
 const limiter = rateLimit({
     windowMs: 10 * 1000, // 10 seconds
     max: 7,
-    headers: false
+    headers: false,
+    message: { msg: 'rate limited' }
 })
 
 router.post('/register', (req, res) => {
@@ -30,6 +31,10 @@ router.post('/register', (req, res) => {
 
 router.post('/login', [limiter, passport.authenticate('local')], (req, res) => {
     const token = JWT.sign({ username: req.user.username }, 'TODOchangeme', { algorithm: 'HS256', expiresIn: '2d' })
+    req.user.visits.push({ ip: req.ip, time: new Date() })
+    req.user.save()
+        .then(() => console.log('Logged in user', req.user.username, 'from', req.ip))
+        .catch(console.log)
     res.json({ msg: 'Login Successful', token })
 })
 

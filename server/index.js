@@ -4,7 +4,6 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
-const rateLimit = require('express-rate-limit')
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 const passport = require('passport')
@@ -22,6 +21,8 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 function initApp() {
     const app = express()
+
+    app.set('trust proxy', true)
 
     app.use(cors())
     app.use(cookieParser())
