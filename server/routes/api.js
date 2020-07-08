@@ -48,6 +48,16 @@ router.get('/profile', ensureAuthenticated, (req, res) => {
         .catch(err => res.json({ err }))
 })
 
+router.get('/profile/:username', ensureAuthenticated, (req, res) => {
+    User.findOne({ username: req.params.username })
+        .then(user => {
+            getProfile(user) 
+                .then(r => res.json(r))
+                .catch(err => res.json({ err }))
+        })
+        .catch(err => res.json({ err }))
+})
+
 router.get('/scoreboard', (req, res) => {
     getLeaderboard()
         .then(standings => {

@@ -46,6 +46,7 @@ export default class App extends Component {
                     <Login path="/login/" />
                     <Logout path="/logout" />
                     <Challenges path="/challenges" />
+                    <Profile path="/profile/:username" />
                     <Profile path="/profile" />
                     <Scoreboard path="/scoreboard" />
                     <NotFound default />

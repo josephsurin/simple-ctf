@@ -13,7 +13,8 @@ class Profile extends Component {
     }
 
     loadData = () => {
-        apiRequest('/profile')
+        var username = this.props.username
+        apiRequest('/profile' + (username ? '/' + username : ''))
             .then(data => this.setState({ data }))
     }
 
