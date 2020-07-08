@@ -3,6 +3,8 @@ const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
+const rateLimit = require('express-rate-limit')
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 const passport = require('passport')
@@ -24,6 +26,7 @@ function initApp() {
     app.use(cors())
     app.use(cookieParser())
     app.use(bodyParser.json())
+    app.use(morgan('combined'))
 
     // PASSPORT AUTH
     app.use(passport.initialize())

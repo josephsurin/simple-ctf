@@ -1,11 +1,17 @@
-const path = require('path')
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 const validator = require('email-validator')
+const rateLimit = require('express-rate-limit')
 const User = require('../models/user')
 const JWT = require('jsonwebtoken')
 const { ensureAuthenticated, submitFlag, hasSolved, getChallenges, getProfile, getLeaderboard } = require('../util')
+
+const limiter = rateLimit({
+    windowMs: 10 * 1000, // 10 seconds
+    max: 7,
+    headers: false
+})
 
 router.post('/register', (req, res) => {
     if(!req.body.username) return res.json({ err: 'Username cannot be empty' })
@@ -22,7 +28,7 @@ router.post('/register', (req, res) => {
     })
 })
 
-router.post('/login', passport.authenticate('local'), (req, res) => {
+router.post('/login', [limiter, passport.authenticate('local')], (req, res) => {
     const token = JWT.sign({ username: req.user.username }, 'TODOchangeme', { algorithm: 'HS256', expiresIn: '2d' })
     res.json({ msg: 'Login Successful', token })
 })
@@ -36,7 +42,7 @@ router.get('/challenges', ensureAuthenticated, (req, res) => {
         .catch(err => res.json({ err }))
 })
 
-router.post('/submit', ensureAuthenticated, (req, res) => {
+router.post('/submit', [limiter, ensureAuthenticated], (req, res) => {
     submitFlag(req.user, req.body.challid, req.body.submission)
         .then(r => res.json(r))
         .catch(err => res.json({ err }))
