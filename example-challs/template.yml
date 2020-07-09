@@ -7,12 +7,16 @@ flag_file: ./flag
 
 points: 500
 
-description: 'example **description** should support *markdown* with `code` and maybe even
-```python
-code blocks for sure !!
-```
+description: |-
+    example **description** should support *markdown*
 
-Author: example'
+    ```
+    including code blocks (no syntax highlighting)
+    ```
+
+    and tables work too
+
+    Author: example
 
 files:
     - ./relative/path/to/file

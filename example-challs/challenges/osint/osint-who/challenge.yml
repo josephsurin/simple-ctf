@@ -5,26 +5,21 @@ title: OSINT who?!
 
 flag: "FLAG{bob}"
 
-points: 200
+points: 30
 
-description: 'the flag is my name \
-trying out new lines and also **markdown** kinda *forgot* about that \
-<br/>
+description: |-
+    the flag is the *name* of the **killer**
 
-remember to wrap in `FLAG{}`
+    | do | tables | work? |
+    | --- | --- | --- |
+    | yes | they | do(n't)!!! |
+    it is so expected
 
-am i on \
-two lines?
-----
-how about <br/>
-me!?
-----
-ok fine how about
+    wrap in `FLAG{}`
 
+    ----
 
-meeee
-----
-Author: me'
+    Author: me
 
 files:
     - ./hint.txt
