@@ -43,7 +43,16 @@ router.post('/changepassword', [limiter, ensureAuthenticated], (req, res) => {
     if(!req.body.oldpassword) return res.json({ err: 'Missing field "oldpassword"' })
     if(!req.body.newpassword) return res.json({ err: 'Missing field "newpassword"' })
     req.user.changePassword(req.body.oldpassword, req.body.newpassword)
-        .then(_ => res.json({ msg: 'Password changed successfully' }))
+        .then(() => res.json({ msg: 'Password changed successfully' }))
+        .catch(err => res.json({ err }))
+})
+
+router.post('/changeemail', [limiter, ensureAuthenticated], (req, res) => {
+    if(!req.body.email) return res.json({ err: 'Missing field "email"' })
+    if(!validator.validate(req.body.email)) return res.json({ err: 'Invalid email' })
+    req.user.email = req.body.email
+    req.user.save()
+        .then(() => res.json({ msg: 'Email changed successfully' }))
         .catch(err => res.json({ err }))
 })
 
