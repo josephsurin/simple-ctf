@@ -4,6 +4,7 @@ import { Router } from 'preact-router'
 import { isLoggedIn } from '../util'
 
 import Header from './header'
+import Home from '../routes/home'
 import Register from '../routes/register'
 import Login from '../routes/login'
 import Logout from '../routes/logout'
@@ -42,8 +43,9 @@ export default class App extends Component {
 			<div id="app">
 				<Header paths={paths}/>
 				<Router onChange={this.handleRoute}>
-                    <Register path="/register/" />
-                    <Login path="/login/" />
+                    <Home path="/" />
+                    <Register path="/register" />
+                    <Login path="/login" />
                     <Logout path="/logout" />
                     <Challenges path="/challenges" />
                     <Profile path="/profile/:username" />

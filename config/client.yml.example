@@ -1,6 +1,10 @@
 title: 'Simple CTF'
 description: 'Simple CTF'
 
+# content to display on the home page. markdown is supported
+homePage: |-
+    Stuff to be display at /home
+
 apiEndpoint: 'http://localhost:3000/api' # for development
 staticFileRoot: 'http://localhost:3000/files' # for development
 
