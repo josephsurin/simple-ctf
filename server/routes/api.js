@@ -39,8 +39,8 @@ router.post('/login', [limiter, passport.authenticate('local')], (req, res) => {
     res.json({ msg: 'Login Successful', token })
 })
 
-router.get('/getemail', ensureAuthenticated, (req, res) => {
-    return res.json({ email: req.user.email })
+router.get('/getdetails', ensureAuthenticated, (req, res) => {
+    return res.json({ username: req.user.username, email: req.user.email })
 })
 
 router.post('/changepassword', [limiter, ensureAuthenticated], (req, res) => {
