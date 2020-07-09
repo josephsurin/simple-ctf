@@ -1,0 +1,49 @@
+@import '../../style/vars'
+@import '../../style/common'
+
+@import '../../style/vars'
+@import '../../style/common'
+
+.editprofile
+  display: flex
+  flex-direction: column
+  width: 60%
+  margin: 20px auto
+  color: $text-grey
+  text-align: center
+  align-items: center
+  @media (max-width: 768px)
+    width: 96%
+    margin-left: 2%
+  .email_form
+    margin: 36px 0
+    input
+      width: 280px
+    button
+      padding: 17px 16px 15px 16px
+      margin-left: 8px
+      font-size: 12px
+  .form
+    width: auto
+    display: flex
+    flex-direction: column
+    align-items: center
+    input
+      margin: 4px 0
+    .submit
+      width: 400px
+      button
+        margin-top: 4px
+        font-size: 12px
+        float: right
+  .success_msg, .error_msg
+    text-align: center
+    font-size: 12px
+    padding: 12px 36px
+    margin-top: 24px
+    border-radius: 3px
+  .success_msg
+    background: $green
+    color: $grey
+  .error_msg
+    background: $red

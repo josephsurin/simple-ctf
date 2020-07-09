@@ -11,6 +11,7 @@ import Logout from '../routes/logout'
 import Challenges from '../routes/challenges'
 import Profile from '../routes/profile'
 import Scoreboard from '../routes/scoreboard'
+import EditProfile from '../routes/editprofile'
 import NotFound from '../routes/notfound'
 
 export default class App extends Component {
@@ -50,6 +51,7 @@ export default class App extends Component {
                     <Challenges path="/challenges" />
                     <Profile path="/profile/:username" />
                     <Profile path="/profile" />
+                    <EditProfile path="/editprofile" />
                     <Scoreboard path="/scoreboard" />
                     <NotFound default />
 				</Router>
