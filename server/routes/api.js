@@ -51,9 +51,11 @@ router.post('/changepassword', [limiter, ensureAuthenticated], (req, res) => {
         .catch(err => res.json({ err: 'Incorrect Password' }))
 })
 
-router.post('/changeemail', [limiter, ensureAuthenticated], (req, res) => {
+router.post('/changeemail', [limiter, ensureAuthenticated], async (req, res) => {
     if(!req.body.email) return res.json({ err: 'Missing field "email"' })
     if(!validator.validate(req.body.email)) return res.json({ err: 'Invalid email' })
+    const other = await User.findOne({ email: req.body.email })
+    if(other) return res.json({ error: 'Account exists with that email' })
     req.user.email = req.body.email
     req.user.save()
         .then(() => res.json({ msg: 'Email changed successfully' }))
