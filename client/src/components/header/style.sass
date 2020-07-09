@@ -1,7 +1,6 @@
 @import '../../style/vars'
 
 .header 
-  height: 40px
   padding: 0
   overflow: auto
   border-bottom: 1px solid $grey
@@ -14,23 +13,21 @@
     justify-content: center
     font-size: 100%
 
-.header nav a 
-  display: inline-block
-  font-size: 14px
-  font-family: 'Source Sans Pro'
-  font-weight: 700
-  height: 30px
-  line-height: 30px
-  padding: 0 8px
-  text-align: center
-  text-decoration: none
-  color: white
-  border-bottom: 3px solid $light-grey
+    a
+      display: inline-block
+      font-size: 14px
+      font-family: 'Source Sans Pro'
+      font-weight: 700
+      height: 30px
+      line-height: 30px
+      padding: 0 8px
+      text-align: center
+      text-decoration: none
+      color: white
+      border-bottom: 3px solid $light-grey
+      &:hover
+        color: $primary
 
-.header nav a:hover,
-.header nav a:active 
-  color: $primary
-
-.header nav a.active
-  border-bottom: 3px solid $primary
-  color: $primary
+    a.active
+      border-bottom: 3px solid $primary
+      color: $primary
