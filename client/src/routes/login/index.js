@@ -22,6 +22,7 @@ class Login extends Component {
         apiRequest('/login', { method: 'POST', body: JSON.stringify(data) }, false)
             .then(r => {
                 if(r.unauthorized) return this.setState({ msg: 'Invalid username or password' })
+                if(r.msg && r.msg == 'rate limited') return this.setState({ msg: 'Too many attempts. Please wait a bit.' })
                 saveToken(r.token)
                 route('/challenges')
             }).catch(err => {
