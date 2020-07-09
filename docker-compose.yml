@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+    web:
+        build: .
+        container_name: web
+        restart: always
+        networks:
+            - nw
+        env_file:
+            - .env
+        ports:
+            - "80:80"
+        environment:
+            - PORT=80
+        volumes:
+            - ./config:/app/config
+        depends_on:
+            - mongo
+        links:
+            - mongo
+    mongo:
+        image: mongo
+        container_name: mongo
+        restart: always
+        volumes:
+            - mongo_data:/data/db
+        env_file:
+            - .env
+        networks:
+            - nw
+
+volumes:
+    mongo_data:
+
+networks:
+    nw:
+        driver: bridge

@@ -1,6 +1,7 @@
 node_modules
 build
 server/data/
+server/favicon
 .env
 config/client.yml
 config/server.yml
