@@ -28,7 +28,7 @@ class EditProfile extends Component {
             .then(r => {
                 if(r.err) return this.setState({ msg: r.err, success: false })
                 this.loadData()
-                return this.setState({ msg: r.msg, success: true })
+                return this.setState({ msg: r.msg, success: r.msg != 'rate limited' })
             }).catch(err => console.log('error occured: ', err))
         e.preventDefault()
     }
@@ -40,7 +40,7 @@ class EditProfile extends Component {
             .then(r => {
                 if(r.err) return this.setState({ msg: r.err, success: false })
                 this.loadData()
-                return this.setState({ msg: r.msg, success: true })
+                return this.setState({ msg: r.msg, success: r.msg != 'rate limited' })
             }).catch(err => console.log('error occured: ', err))
         e.preventDefault()
     }

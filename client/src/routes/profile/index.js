@@ -1,4 +1,5 @@
 import { h, Component } from 'preact'
+import { Link } from 'preact-router'
 import ordinal from 'ordinal'
 import style from './style.sass'
 
@@ -44,7 +45,7 @@ class Profile extends Component {
         )
     }
 
-    render(_, { data }) {
+    render(props, { data }) {
         console.log(data)
         if(!data) return <Loader />
         let { userData, position, solves, challenges } = data
@@ -54,6 +55,7 @@ class Profile extends Component {
                 <div class={style.username}>{userData.username}</div>
                 <div class={style.position}>{ordinal(position)} place</div>
                 <div class={style.total_points}>{totalPoints} {totalPoints === 1 ? 'point' : 'points'}</div>
+                {props.username ? null : <Link href="/editprofile">Edit Profile</Link>}
                 
                 <h3>Solves</h3>
                 {this.formatSolves(solves, challenges)}
