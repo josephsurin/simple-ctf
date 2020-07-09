@@ -1,0 +1,8 @@
+title: 'Simple CTF'
+description: 'Simple CTF'
+
+apiEndpoint: 'http://localhost:3000/api' # for development
+staticFileRoot: 'http://localhost:3000/files' # for development
+
+# apiEndpoint: '/api'
+# staticFileRoot: '/files'

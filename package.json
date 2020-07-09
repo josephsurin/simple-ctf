@@ -5,9 +5,9 @@
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
-    "build": "preact build --src client/src --dest build",
-    "build-watch": "preact watch --src client/src",
-    "dev": "concurrently npm:build-watch npm:start"
+    "prebuild": "node ./scripts/prebuild.js",
+    "build": "yarn prebuild && preact build --src client/src --template client/index.html --no-prerender --dest build",
+    "build-watch": "yarn prebuild && preact watch --src client/src --no-prerender --template client/index.html"
   },
   "keywords": [],
   "author": "",
@@ -36,9 +36,10 @@
     "tar": "^6.0.2"
   },
   "devDependencies": {
+    "mustache": "^4.0.1",
     "node-sass": "^4.14.1",
     "preact": "^10.4.5",
-    "preact-cli": "^2.2.1",
+    "preact-cli": "^3.0.0-rc.14",
     "preact-router": "^3.2.1",
     "sass-loader": "7.3.1"
   }

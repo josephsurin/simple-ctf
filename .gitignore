@@ -1,3 +1,6 @@
 node_modules
 build
 server/data/
+.env
+config/client.yml
+config/server.yml

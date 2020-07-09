@@ -1,8 +1,7 @@
 import path from 'path'
 import { route } from 'preact-router'
-
-const apiEndpoint = 'http://localhost:3000/api'
-const staticFileRoot = 'http://localhost:3000/files'
+import config from '../config'
+const { apiEndpoint, staticFileRoot } = config
 
 export const apiRequest = (endpoint, reqOpts, redirect='/login') => {
     var authHeader = getToken() ? { 'Authorization' : 'Bearer ' + getToken() } : {}
