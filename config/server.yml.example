@@ -1,2 +1,4 @@
 # secret used to sign json web tokens
 jwtSecret: "asdf"
+# favicon url http(s) only
+iconUrl: "http://asdf.asdf/asdf.png"

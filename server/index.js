@@ -1,8 +1,10 @@
+const fs = require('fs')
 const path = require('path')
 const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const favicon = require('serve-favicon')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
@@ -13,6 +15,7 @@ const User = require('./models/user')
 const { jwtSecret, mongodb_url } = require('./config')
 const { createDefaultAdminUser } = require('./util')
 
+console.log('attempting to connect to database')
 mongoose.connect(mongodb_url, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log(`Connected to DB`)
@@ -33,6 +36,10 @@ function initApp() {
     app.use(cookieParser())
     app.use(bodyParser.json())
     app.use(morgan('combined'))
+
+    if(fs.existsSync(path.join(__dirname, './favicon'))) {
+        app.use(favicon(path.join(__dirname, './favicon')))
+    }
 
     // PASSPORT AUTH
     app.use(passport.initialize())
