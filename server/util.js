@@ -88,13 +88,15 @@ const submitFlag = (user, challid, submission) => {
         try {
             const time = new Date()
 
+            // check that the flag is correct
+            const challenge = await Challenge.findOne({ id: challid })
+            if(!challenge) return res({ msg: 'invalid challid' })
+
             const s = new Submission({ user: user.username, chall: challid, submission, time })
             s.save()
                 .then(() => console.log('[SUBMISSION]', user.username, 'submitted', '"' + submission + '"', 'for chall', challid))
                 .catch(console.log)
 
-            // check that the flag is correct
-            const challenge = await Challenge.findOne({ id: challid })
             const submissionBuf = Buffer.from(submission)
             const flagBuf = Buffer.from(challenge.flag)
             if(submissionBuf.length == flagBuf.length && timingSafeEqual(submissionBuf, flagBuf)) {

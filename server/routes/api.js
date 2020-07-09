@@ -5,6 +5,7 @@ const validator = require('email-validator')
 const rateLimit = require('express-rate-limit')
 const User = require('../models/user')
 const JWT = require('jsonwebtoken')
+const { jwtSecret } = require('../config')
 const { ensureAuthenticated, submitFlag, hasSolved, getChallenges, getProfile, getLeaderboard } = require('../util')
 
 const limiter = rateLimit({
@@ -30,7 +31,7 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/login', [limiter, passport.authenticate('local')], (req, res) => {
-    const token = JWT.sign({ username: req.user.username }, 'TODOchangeme', { algorithm: 'HS256', expiresIn: '2d' })
+    const token = JWT.sign({ username: req.user.username }, jwtSecret, { algorithm: 'HS256', expiresIn: '2d' })
     req.user.visits.push({ ip: req.ip, time: new Date() })
     req.user.save()
         .then(() => console.log('Logged in user', req.user.username, 'from', req.ip))

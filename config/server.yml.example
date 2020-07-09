@@ -1,0 +1,2 @@
+# secret used to sign json web tokens
+jwtSecret: "asdf"
