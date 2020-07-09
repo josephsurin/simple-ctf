@@ -38,6 +38,14 @@ router.post('/login', [limiter, passport.authenticate('local')], (req, res) => {
     res.json({ msg: 'Login Successful', token })
 })
 
+router.post('/changepassword', [limiter, ensureAuthenticated], (req, res) => {
+    if(!req.body.oldpassword) return res.json({ err: 'Missing field "oldpassword"' })
+    if(!req.body.newpassword) return res.json({ err: 'Missing field "newpassword"' })
+    req.user.changePassword(req.body.oldpassword, req.body.newpassword)
+        .then(_ => res.json({ msg: 'Password changed successfully' }))
+        .catch(err => res.json({ err }))
+})
+
 router.get('/challenges', ensureAuthenticated, (req, res) => {
     getChallenges()
         .then(rawChalls => {
