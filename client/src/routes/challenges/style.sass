@@ -16,63 +16,109 @@
   @media (max-width: 768px)
     width: 96%
     margin-left: 2%
-  .challenge_card
-    background: $black-grey
+
+
+.files_container
+  .file_link
+    background: rgba(10,10,18,0.7)
+    padding: 2px 4px
     border-radius: 3px
+    margin: 0 4px
+
+.list_challenge_card
+  background: $black-grey
+  border-radius: 3px
+  border: 1px solid $grey
+  font-size: 18px
+  color: $text-grey
+  margin: 0px 0
+  .main_details
+    font-family: 'Source Sans Pro'
+    font-weight: 600
+    background: none
+    width: 100%
+    margin: 0
+    outline: none
+    border: none
+    padding: 10px 16px
+    text-align: left
+    &:hover
+      background: darken($black-grey, 3%)
+    .solved_indicator
+      float: right
+  .details
+    background: darken($dark-grey, 1%)
+    border-top: 1px solid darken($grey, 5%)
+    font-family: 'Nunito'
+    font-size: 15px
+    padding: 10px 16px
+    padding-top: 0
+    .submission_container
+      margin: 12px 0
+      .submission_form
+        input, button
+          padding: 9px 13px
+        input
+          width: 88%
+          border-top-right-radius: 0
+          border-bottom-right-radius: 0
+          border-right: none
+        button
+          width: 12%
+          border-top-left-radius: 0
+          border-bottom-left-radius: 0
+          border-left: none
+          font-size: 12px
+          padding: 12px 13px 10px 13px
+    .submission_incorrect, .submission_correct, .submission_already_solved
+      background: $red
+      padding: 4px
+      border-radius: 3px
+      text-align: center
+    .submission_correct
+      background: $green
+    .submission_already_solved
+      background: $blue2
+
+.tile_challenge_card
+  .main_details
+    background: $black-grey
     border: 1px solid $grey
-    font-size: 18px
-    color: $text-grey
-    margin: 0px 0
-    .main_details
-      font-family: 'Source Sans Pro'
-      font-weight: 600
-      background: none
-      width: 100%
-      margin: 0
-      outline: none
-      border: none
-      padding: 10px 16px
-      text-align: left
-      &:hover
-        background: darken($black-grey, 3%)
-      .solved_indicator
-        float: right
-    .details
-      background: darken($dark-grey, 1%)
-      border-top: 1px solid darken($grey, 5%)
-      font-family: 'Nunito'
-      font-size: 15px
-      padding: 10px 16px
-      padding-top: 0
-      .files_container
-        .file_link
-          background: rgba(10,10,18,0.7)
-          padding: 2px 4px
-          border-radius: 3px
-          margin: 0 4px
-      .submission_container
-        margin: 12px 0
-        .submission_form
-          input, button
-            padding: 9px 13px
-          input
-            width: 88%
-            border-top-right-radius: 0
-            border-bottom-right-radius: 0
-            border-right: none
-          button
-            width: 12%
-            border-top-left-radius: 0
-            border-bottom-left-radius: 0
-            border-left: none
-            font-size: 12px
-            padding: 12px 13px 10px 13px
-      .submission_incorrect, .submission_correct, .submission_already_solved
-        background: $red
-        padding: 4px
-        border-radius: 3px
-        text-align: center
-      .submission_correct
-        background: $green
-      .submission_already_solved
-        background: $blue2
+    width: 164px
+    font-family: 'Source Sans Pro'
+    font-weight: 600
+    height: 86px
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+    position: relative
+    border-radius: 5px
+    margin: 4px
+  .solved
+    background: $secondary
+    opacity: 0.8
+
+.tile_modal_inner
+  .title
+    font-size: 1.8em
+    font-weight: 600
+  .points_and_solves
+    font-size: 1.2em
+  .details
+    .submission_container
+      margin-top: 8px
+      .submission_form
+        input, button
+          padding: 9px 13px
+        input
+          width: 80%
+          border-top-right-radius: 0
+          border-bottom-right-radius: 0
+          border-right: none
+        button
+          width: 20%
+          border-top-left-radius: 0
+          border-bottom-left-radius: 0
+          border-left: none
+          font-size: 12px
+          padding: 12px 13px 10px 13px

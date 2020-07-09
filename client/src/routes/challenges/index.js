@@ -23,7 +23,7 @@ class Challenges extends Component {
             <div class={style.challenges}>
                 <div class={style.challenges_container}>
                     {!challenges ? <Loader /> :
-                    challenges.map(c => <ChallengeCard data={c} onSolve={this.loadData} />)}
+                    challenges.map(c => <ChallengeCard cardStyle="tile" data={c} onSolve={this.loadData} />)}
                 </div>
             </div>
         )
