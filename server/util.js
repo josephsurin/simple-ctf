@@ -22,6 +22,18 @@ const ensureAdmin = (req, res, next) => {
     }
 }
 
+const createDefaultAdminUser = () => {
+    return new Promise(async (res, rej) => {
+        var admin = await User.findOne({ username: 'admin', admin: true })
+        if(admin) return res('admin user already exists')
+        admin = new User({ username: 'admin', email: 'admin', admin: true })
+        User.register(admin, 'admin', (err, user) => {
+            if(err) return rej('admin account already exists')
+            else return res('Default admin user created with creds admin:admin, don\'t forget to change this at /api/changepassword')
+        })
+    }) 
+}
+
 const saveChall = (challPath, category) => {
     return new Promise(async (res, rej) => {
         try {
@@ -160,4 +172,4 @@ const getProfile = (user) => {
     })
 }
 
-module.exports = { ensureAuthenticated, ensureAdmin, saveChallData, getChallenges, submitFlag, hasSolved, getProfile, getLeaderboard }
+module.exports = { ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, submitFlag, hasSolved, getProfile, getLeaderboard }

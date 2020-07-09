@@ -10,6 +10,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
 const User = require('./models/user')
+const { createDefaultAdminUser } = require('./util')
 
 const dbURI = process.env.DB_URI || 'mongodb://localhost:27017/simple-ctf'
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -20,6 +21,10 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch((err) => console.log(err))
 
 function initApp() {
+    createDefaultAdminUser()
+        .then(console.log)
+        .catch(console.log)
+
     const app = express()
 
     app.set('trust proxy', true)
