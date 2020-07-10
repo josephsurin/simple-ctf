@@ -13,6 +13,8 @@
   flex-direction: column
   width: 60%
   margin: 20px auto
+  margin-bottom: 40px
+  max-width: 700px
   @media (max-width: 768px)
     width: 96%
     margin-left: 2%
@@ -49,6 +51,15 @@
       font-family: 'Source Sans Pro'
       border-bottom: 1px dashed $light-grey
       margin-bottom: 8px
+    .category_challenges_container
+      display: grid
+      grid-template-columns: 1fr 1fr 1fr 1fr
+      justify-items: stretch
+      @media (max-width: 992px)
+        grid-template-columns: 1fr 1fr 1fr
+      @media (max-width: 576px)
+        grid-template-columns: 1fr 1fr
+        
 
 .files_container
   .file_link
@@ -118,7 +129,7 @@
   .main_details
     background: $black-grey
     border: 1px solid $grey
-    width: 164px
+    width: 168px
     font-family: 'Source Sans Pro'
     font-weight: 600
     height: 86px

@@ -14,7 +14,7 @@ class Challenges extends Component {
 
     loadData = () => {
         apiRequest('/challenges')
-            .then(r => this.setState({ challenges: r.challenges }))
+            .then(r => r.challenges.sort((a, b) => a.points - b.points) && this.setState({ challenges: r.challenges }))
     }
 
     changeViewStyle = (viewStyle) => {
@@ -29,7 +29,9 @@ class Challenges extends Component {
     // grouped by category, sorted by number of points  (for now)
     renderTileChallenges = (challenges) => {
         const catMap = groupBy(challenges, x => x.category) 
-        return Array.from(catMap.keys(), category => (
+        return Array.from(catMap.keys(), category => {
+            catMap.get(category).sort((a, b) => a.points - b.points)
+            return (
             <div class={style.category_container}>
                 <div class={style.category_header}>{category}</div>
                 <div class={style.category_challenges_container}>
@@ -38,7 +40,8 @@ class Challenges extends Component {
                     )}
                 </div>
             </div>
-        ))
+            )
+        })
     }
 
     render(_, { challenges, viewStyle }) {
