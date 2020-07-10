@@ -10,11 +10,12 @@ services:
         env_file:
             - .env
         ports:
-            - "80:80"
+            - "443:80"
         environment:
             - PORT=80
         volumes:
             - ./config:/app/config
+            - ./.ssl:/app/.ssl
         depends_on:
             - mongo
     mongo:
