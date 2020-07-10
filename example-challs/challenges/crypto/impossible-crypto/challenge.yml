@@ -1,0 +1,20 @@
+# unique identifier for the challenge
+id: impossible-crypto
+
+title: Impossible Crypto
+
+flag: "FLAG{-1/12}"
+
+points: 250
+
+description: |-
+    crypto is just math... part 6
+
+    ```
+    x = sum_{i=1}^infty i
+    flag = "FLAG{" + str(x) + "}"
+    ```
+
+    Author: me
+
+files: []

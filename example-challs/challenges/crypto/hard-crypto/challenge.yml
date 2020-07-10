@@ -1,0 +1,19 @@
+# unique identifier for the challenge
+id: hard-crypto
+
+title: Hard Crypto
+
+flag: "FLAG{123}"
+
+points: 100
+
+description: |-
+    crypto is just math... part 3
+
+    ```python
+    flag = "FLAG{" + str(int('1111011', 2)) + "}"
+    ```
+
+    Author: me
+
+files: []

@@ -1,0 +1,17 @@
+# unique identifier for the challenge
+id: easy-pwn
+
+title: Easy PWN
+
+flag: "FLAG{easy!!!}"
+
+points: 1
+
+description: |-
+    pwn is just buffer overflows...
+
+    `nc 185.112.42.164 1337`
+
+    Author: me
+
+files: ['./easypwn']

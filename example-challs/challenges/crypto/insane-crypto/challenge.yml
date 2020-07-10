@@ -1,0 +1,20 @@
+# unique identifier for the challenge
+id: insane-crypto
+
+title: Insane Crypto
+
+flag: "FLAG{83}"
+
+points: 150
+
+description: |-
+    crypto is just math... part 4
+
+    ```
+    assert x^2 + 1128x - 100513 == 0
+    assert x > 0 and flag == "FLAG{" + str(x) + "}"
+    ```
+
+    Author: me
+
+files: []
