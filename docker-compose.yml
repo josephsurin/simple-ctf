@@ -13,6 +13,7 @@ services:
             - "443:80"
         environment:
             - PORT=80
+            - NODE_ENV=production
         volumes:
             - ./config:/app/config
             - ./.ssl:/app/.ssl

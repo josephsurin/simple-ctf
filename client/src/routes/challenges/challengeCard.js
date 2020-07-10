@@ -48,7 +48,7 @@ class ChallengeCard extends Component {
                 {files.map(relPath => {
                     var filename = path.basename(relPath)
                     var filePath = genStaticFilePath(path.join(id, relPath))
-                    return <a class={style.file_link} href={filePath}>{filename}</a>
+                    return <a class={style.file_link} href={filePath} download="download">{filename}</a>
                 })}
             </div>}
             <div class={style.submission_container}>
