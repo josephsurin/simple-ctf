@@ -17,8 +17,6 @@ services:
             - ./config:/app/config
         depends_on:
             - mongo
-        links:
-            - mongo
     mongo:
         image: mongo
         container_name: mongo
