@@ -64,6 +64,8 @@ function initApp() {
 
     app.use('/', express.static(path.join(__dirname, '../build'), { extensions: ['html', 'js', 'css'] }))
 
+    if(fs.existsSync(path.join(__dirname, './data'))) fs.mkdirSync(path.join(__dirname, './data'))
+    if(fs.existsSync(path.join(__dirname, './data/files'))) fs.mkdirSync(path.join(__dirname, './data/files'))
     app.use('/files', express.static(path.join(__dirname, './data/files/')))
 
     app.use((_, res) => {
