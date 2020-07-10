@@ -1,3 +1,4 @@
+const https = require('https')
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
@@ -69,8 +70,17 @@ function initApp() {
         res.sendFile(path.join(__dirname, '../build/index.html'))
     })
 
+    const https_options = {
+        key: fs.readFileSync(path.join(__dirname, '../.ssl/privkey.pem')),
+        cert: fs.readFileSync(path.join(__dirname, '../.ssl/cert.pem')),
+        ca: fs.readFileSync(path.join(__dirname, '../.ssl/chain.pem'))
+    }
+
     const port = process.env.PORT || 3000
-    app.listen(port, () => {
-        console.log('listening on port ' + port)
+    https.createServer(https_options, app).listen(port, () => {
+        console.log('listening on port', port)
     })
+    // app.listen(port, () => {
+    //     console.log('listening on port ' + port)
+    // })
 }
