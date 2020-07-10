@@ -17,7 +17,7 @@ services:
         volumes:
             - ./config:/app/config
             - ./.ssl:/app/.ssl
-            - ctf_files:/app/server/data/files
+            - ctf_files:/app/server/data
         depends_on:
             - mongo
     mongo:
