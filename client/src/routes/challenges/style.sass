@@ -16,7 +16,39 @@
   @media (max-width: 768px)
     width: 96%
     margin-left: 2%
-
+  .challenges_view_menu
+    display: flex
+    flex-direction: row
+    width: 100%
+    justify-content: flex-end
+    margin-bottom: 8px
+    button
+      font-size: 12px
+      font-family: 'Source Sans Pro'
+      font-weight: 600
+      text-transform: uppercase
+      padding: 6px 8px
+      width: 60px
+      background: $black-grey
+      border: 1px solid $grey
+    .tile_button
+      border-right: none
+      border-top-right-radius: 0
+      border-bottom-right-radius: 0
+    .list_button
+      border-top-left-radius: 0
+      border-bottom-left-radius: 0
+    .active_view_button
+      background: $secondary
+  .category_container
+    margin: 18px 0
+    .category_header
+      color: $text-grey
+      font-size: 1.8em
+      font-weight: 600
+      font-family: 'Source Sans Pro'
+      border-bottom: 1px dashed $light-grey
+      margin-bottom: 8px
 
 .files_container
   .file_link
