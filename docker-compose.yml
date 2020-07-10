@@ -25,6 +25,7 @@ services:
         restart: always
         volumes:
             - mongo_data:/data/db
+            - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
         env_file:
             - .env
         networks:
