@@ -48,6 +48,7 @@ class Challenges extends Component {
         return (
             <div class={style.challenges}>
                 <div class={style.challenges_container}>
+                    <h1>Challenges</h1>
                     {!challenges ? null :
                     <div class={style.challenges_view_menu}>
                         <button class={style.tile_button + ' ' + (viewStyle == 'tile' ? style.active_view_button : '')} onClick={this.changeViewStyle.bind(this, 'tile')}>Tiles</button>
