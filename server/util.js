@@ -6,6 +6,7 @@ const yaml = require('js-yaml')
 const passport = require('passport')
 const NodeCache = require('node-cache')
 const cache = new NodeCache({ stdTTL: 5, useClones: false })
+const { maxTeamSize } = require('./config')
 
 const User = require('./models/user')
 const Challenge = require('./models/challenge')
@@ -158,6 +159,54 @@ const getLeaderboard = () => {
     })
 }
 
+const addMember = (user, memberEmail) => {
+    return new Promise(async (res, rej) => {
+        try {
+            if(user.memberEmails.length + 1 >= maxTeamSize) {
+                return res({ err: 'Max team size reached (' + maxTeamSize + ')' })
+            }
+
+            if(memberEmail == user.email) {
+                return res({ err: 'Member already in team' })
+            }
+
+            const time = new Date()
+            const numchanged = await User.findOneAndUpdate(
+                { username: user.username, 'memberEmails.email': { $ne: memberEmail } },
+                { $push: { memberEmails: { email: memberEmail, time } } } ,
+                { useFindAndModify: false })
+
+            if(numchanged == null) {
+                return res({ err: 'Member already in team' })
+            }
+
+            return res({ msg: 'Added member to team' })
+        } catch(e) {
+            rej(e)
+        }
+    })
+}
+
+const removeMember = (user, memberEmail) => {
+    return new Promise(async (res, rej) => {
+        try {
+            const numchanged = await User.findOneAndUpdate(
+                { username: user.username },
+                { $pull: { memberEmails: { email: memberEmail } } },
+                { useFindAndModify: false }
+            )
+
+            if(numchanged == null) {
+                return res({ err: 'Unexpected Error' })
+            }
+
+            return res({ msg: 'Member removed from team' })
+        } catch(e) {
+            rej(e)
+        }
+    })
+}
+
 const getProfile = (user) => {
     return new Promise(async (res, rej) => {
         try {
@@ -173,4 +222,4 @@ const getProfile = (user) => {
     })
 }
 
-module.exports = { ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, submitFlag, hasSolved, getProfile, getLeaderboard }
+module.exports = { ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, submitFlag, hasSolved, addMember, removeMember, getProfile, getLeaderboard }

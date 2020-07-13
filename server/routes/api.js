@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit')
 const User = require('../models/user')
 const JWT = require('jsonwebtoken')
 const { jwtSecret } = require('../config')
-const { ensureAuthenticated, submitFlag, hasSolved, getChallenges, getProfile, getLeaderboard } = require('../util')
+const { ensureAuthenticated, submitFlag, hasSolved, getChallenges, addMember, removeMember, getProfile, getLeaderboard } = require('../util')
 
 const limiter = rateLimit({
     windowMs: 10 * 1000, // 10 seconds
@@ -40,7 +40,7 @@ router.post('/login', [limiter, passport.authenticate('local')], (req, res) => {
 })
 
 router.get('/getdetails', ensureAuthenticated, (req, res) => {
-    return res.json({ username: req.user.username, email: req.user.email })
+    return res.json({ username: req.user.username, email: req.user.email, members: req.user.memberEmails.map(v => v.email) })
 })
 
 router.post('/changepassword', [limiter, ensureAuthenticated], (req, res) => {
@@ -73,6 +73,20 @@ router.get('/challenges', ensureAuthenticated, (req, res) => {
 
 router.post('/submit', [limiter, ensureAuthenticated], (req, res) => {
     submitFlag(req.user, req.body.challid, req.body.submission)
+        .then(r => res.json(r))
+        .catch(err => res.json({ err }))
+})
+
+router.post('/addmember', ensureAuthenticated, (req, res) => {
+    if(!req.body.memberEmail) return res.json({ err: 'Missing field "memberEmail"' })
+    addMember(req.user, req.body.memberEmail)
+        .then(r => res.json(r))
+        .catch(err => res.json({ err }))
+})
+
+router.post('/removemember', ensureAuthenticated, (req, res) => {
+    if(!req.body.memberEmail) return res.json({ err: 'Missing field "memberEmail"' })
+    removeMember(req.user, req.body.memberEmail)
         .then(r => res.json(r))
         .catch(err => res.json({ err }))
 })
