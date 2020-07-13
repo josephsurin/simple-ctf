@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
     username: { type: String, index: true },
     password: { type: String },
     email: { type: String, unique: true },
+    memberEmails: { _id: false, type: [{ email: String, time: Date }], default: [] },
     registered: { type: Date, default: Date.now },
     solves: { _id: false, type: [{ chall: String, time: Date  }], default: [] },
     visits: { _id: false, type: [{ ip: String, time: Date }], default: []},
