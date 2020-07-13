@@ -2,3 +2,5 @@
 jwtSecret: "asdf"
 # favicon url http(s) only
 iconUrl: "http://asdf.asdf/asdf.png"
+# max number of members in team (including team leader)
+maxTeamSize: 4
