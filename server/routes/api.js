@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit')
 const User = require('../models/user')
 const JWT = require('jsonwebtoken')
 const { jwtSecret } = require('../config')
-const { ensureAuthenticated, submitFlag, hasSolved, getChallenges, addMember, removeMember, getProfile, getLeaderboard } = require('../util')
+const { ensureAuthenticated, getNumAttempts, submitFlag, hasSolved, getChallenges, addMember, removeMember, getProfile, getLeaderboard } = require('../util')
 
 const limiter = rateLimit({
     windowMs: 10 * 1000, // 10 seconds
@@ -65,7 +65,7 @@ router.post('/changeemail', [limiter, ensureAuthenticated], async (req, res) => 
 router.get('/challenges', ensureAuthenticated, (req, res) => {
     getChallenges()
         .then(rawChalls => {
-            const challenges = rawChalls.map(chall => Object.assign(chall.toJSON(), { solves: null, numSolves: chall.solves.length, solved: hasSolved(req.user, chall.id) }))
+            const challenges = rawChalls.map(chall => Object.assign(chall.toJSON(), { solves: null, maxAttempts: chall.maxAttempts, attempts: getNumAttempts(req.user, chall.id), numSolves: chall.solves.length, solved: hasSolved(req.user, chall.id) }))
             res.json({ msg: 'got challenges', challenges })
         })
         .catch(err => res.json({ err }))

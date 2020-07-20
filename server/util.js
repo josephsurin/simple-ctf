@@ -238,4 +238,4 @@ const getProfile = (user) => {
     })
 }
 
-module.exports = { ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, submitFlag, hasSolved, addMember, removeMember, getProfile, getLeaderboard }
+module.exports = { ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, getNumAttempts, submitFlag, hasSolved, addMember, removeMember, getProfile, getLeaderboard }
