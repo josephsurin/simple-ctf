@@ -109,7 +109,7 @@ const submitFlag = (user, challid, submission) => {
                 .catch(console.log)
 
             if(challenge.maxAttempts > 0 && getNumAttempts(user, challid) > challenge.maxAttempts) {
-                return res({ err: 'max attempts' })
+                return res({ msg: 'max attempts' })
             }
 
             // check that the flag is correct
