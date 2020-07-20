@@ -100,16 +100,16 @@ const submitFlag = (user, challid, submission) => {
             //     .then(() => console.log('[SUBMISSION]', user.username, 'submitted', '"' + submission + '"', 'for chall', challid))
             //     .catch(console.log)
 
-            User.findOneAndUpdate(
+            user = await User.findOneAndUpdate(
                 { username: user.username },
                 { $push: { submissions: { chall: challid, submission, time } } },
                 { useFindAndModify: false }
             )
-                .then(() => console.log('[SUBMISSION]', user.username, 'submimtted', '"' + submission + '"', 'for chall', challid))
                 .catch(console.log)
 
-            if(challenge.maxAttempts > 0 && getNumAttempts(user, challid) > challenge.maxAttempts) {
-                return res({ msg: 'max attempts' })
+            const numAttemptsLeft = challenge.maxAttempts > 0 ? challenge.maxAttempts - getNumAttempts(user, challid) - 1 : null
+            if(challenge.maxAttempts > 0 && numAttemptsLeft < 0) {
+                return res({ msg: 'max attempts', numAttemptsLeft })
             }
 
             // check that the flag is correct
@@ -124,17 +124,17 @@ const submitFlag = (user, challid, submission) => {
 
                 // $ne: challid fails if user has already solved
                 if(numchanged == null) {
-                    return res({ msg: 'already solved'})
+                    return res({ msg: 'already solved',  numAttemptsLeft })
                 }
 
                 // update the chall's solves
                 challenge.solves.push({ user: user.username, time })
                 await challenge.save()
 
-                return res({ msg: 'correct' })
+                return res({ msg: 'correct', numAttemptsLeft })
             }
 
-            return res({ msg: 'incorrect' })
+            return res({ msg: 'incorrect', numAttemptsLeft })
         } catch(e) {
             rej(e)
         }
