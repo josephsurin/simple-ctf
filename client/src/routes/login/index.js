@@ -4,7 +4,7 @@ import style from './style.sass'
 import { apiRequest, saveToken } from '../../util'
 
 class Login extends Component {
-    state = { username: '', password: '', msg: null }
+    state = { username: '', password: '', msg: null, loading: false }
 
     onUsernameChange = e => {
         let { value } = e.target
@@ -17,21 +17,24 @@ class Login extends Component {
     }
 
     onSubmit = e => {
-        let { username, password } = this.state
-        var data = { username, password }
-        apiRequest('/login', { method: 'POST', body: JSON.stringify(data) }, false)
-            .then(r => {
-                if(r.unauthorized) return this.setState({ msg: 'Invalid username or password' })
-                if(r.msg && r.msg == 'rate limited') return this.setState({ msg: 'Too many attempts. Please wait a bit.' })
-                saveToken(r.token)
-                route('/challenges')
-            }).catch(err => {
-                console.log('error occured: ', err)
-            })
-        e.preventDefault()
+        let { username, password, loading } = this.state
+        if(loading) return e.preventDefault()
+        this.setState({ loading: true }, () => {
+            var data = { username, password }
+            apiRequest('/login', { method: 'POST', body: JSON.stringify(data) }, false)
+                .then(r => {
+                    if(r.unauthorized) return this.setState({ msg: 'Invalid username or password' })
+                    if(r.msg && r.msg == 'rate limited') return this.setState({ msg: 'Too many attempts. Please wait a bit.' })
+                    saveToken(r.token)
+                    route('/challenges')
+                }).catch(err => {
+                    console.log('error occured: ', err)
+                })
+            e.preventDefault()
+        })
     }
 
-    render(_, { username, password, msg }) {
+    render(_, { username, password, msg, loading }) {
         return (
             <div class={style.login}>
                 <h1>Login</h1>
@@ -39,7 +42,7 @@ class Login extends Component {
                 <form class={style.form} onSubmit={this.onSubmit}>
                     <input type="text" placeholder="username" value={username} onInput={this.onUsernameChange} />
                     <input type="password" placeholder="password" value={password} onInput={this.onPasswordChange} />
-                    <div class={style.login_button_div}><button type="submit">Login</button></div>
+                    <div class={style.login_button_div + ' ' + (loading ? style.disabled : '')}><button type="submit">Login</button></div>
                 </form>
             </div>
         )

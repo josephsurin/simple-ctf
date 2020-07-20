@@ -23,10 +23,7 @@ class Register extends Component {
 
     onSubmit = e => {
         let { username, email, password, loading } = this.state
-        if(loading) {
-            e.preventDefault()
-            return false
-        }
+        if(loading) return e.preventDefault()
         this.setState({ loading: true }, () => {
             var data = { username, email, password }
             apiRequest('/register', { method: 'POST', body: JSON.stringify(data) })
