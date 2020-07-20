@@ -40,7 +40,7 @@ class ChallengeCard extends Component {
     }
 
     renderDetails = (id, description, files, submitting, submission, numAttemptsLeft, status) => {
-        var disabled = submitting || numAttemptsLeft <= 0
+        var disabled = submitting || (numAttemptsLeft != null && numAttemptsLeft <= 0)
         return (
             <div class={style.details}>
                 <div class={style.description} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(md.render(description)) }}>
@@ -71,7 +71,7 @@ class ChallengeCard extends Component {
 
     render({ data, cardStyle }, { isOpen, submitting, submission, numAttemptsLeft, status }) {
         let { id, title, category, points, description, numSolves, files, solved, attempts, maxAttempts } = data
-        numAttemptsLeft = numAttemptsLeft == null ? (maxAttempts - attempts) : numAttemptsLeft
+        numAttemptsLeft = maxAttempts == 0 ? null : numAttemptsLeft == null ? (maxAttempts - attempts) : numAttemptsLeft
         return (
             <div class={cardStyle == 'list' ? style.list_challenge_card : cardStyle == 'tile' ? style.tile_challenge_card : ''}>
                 {cardStyle == 'list' ?
