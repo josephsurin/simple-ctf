@@ -10,7 +10,7 @@ const { maxTeamSize } = require('./config')
 
 const User = require('./models/user')
 const Challenge = require('./models/challenge')
-const Submission = require('./models/submission')
+// const Submission = require('./models/submission')
 const filesDir = path.join(__dirname, './data/files/')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
@@ -83,27 +83,43 @@ const getChallenges = async () => {
     return rawChalls
 }
 
+const getNumAttempts = (user, challid) => {
+    return user.submissions.filter(c => c.chall == challid).length
+}
+
 const submitFlag = (user, challid, submission) => {
     return new Promise(async (res, rej) => {
         try {
             const time = new Date()
 
-            // check that the flag is correct
             const challenge = await Challenge.findOne({ id: challid })
             if(!challenge) return res({ msg: 'invalid challid' })
 
-            const s = new Submission({ user: user.username, chall: challid, submission, time })
-            s.save()
-                .then(() => console.log('[SUBMISSION]', user.username, 'submitted', '"' + submission + '"', 'for chall', challid))
+            // const s = new Submission({ user: user.username, chall: challid, submission, time })
+            // s.save()
+            //     .then(() => console.log('[SUBMISSION]', user.username, 'submitted', '"' + submission + '"', 'for chall', challid))
+            //     .catch(console.log)
+
+            User.findOneAndUpdate(
+                { username: user.username },
+                { $push: { submissions: { chall: challid, submission, time } } },
+                { useFindAndModify: false }
+            )
+                .then(() => console.log('[SUBMISSION]', user.username, 'submimtted', '"' + submission + '"', 'for chall', challid))
                 .catch(console.log)
 
+            if(challenge.maxAttempts > 0 && getNumAttempts(user, challid) > challenge.maxAttempts) {
+                return res({ err: 'max attempts' })
+            }
+
+            // check that the flag is correct
             const submissionBuf = Buffer.from(submission)
             const flagBuf = Buffer.from(challenge.flag)
             if(submissionBuf.length == flagBuf.length && timingSafeEqual(submissionBuf, flagBuf)) {
                 // update the user's solves
                 const numchanged = await User.findOneAndUpdate(
                     { username: user.username, 'solves.chall': { $ne: challid } },
-                    { $push: { solves: { chall: challid, time } } },
+                    { $push: { solves: { chall: challid, time } }},
                     { useFindAndModify: false })
 
                 // $ne: challid fails if user has already solved

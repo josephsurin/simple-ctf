@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     memberEmails: { _id: false, type: [{ email: String, time: Date }], default: [] },
     registered: { type: Date, default: Date.now },
     solves: { _id: false, type: [{ chall: String, time: Date  }], default: [] },
+    submissions: { _id: false, type: [{ chall: String, submission: String, time: Date }], default: [] },
     visits: { _id: false, type: [{ ip: String, time: Date }], default: []},
     admin: { type: Boolean, default: false }
 })
