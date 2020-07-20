@@ -13,8 +13,8 @@ class Profile extends Component {
         this.loadData()
     }
 
-    componentDidUpdate() {
-        this.loadData()
+    componentDidUpdate({ username }) {
+        if(username != this.props.username) this.loadData()
     }
 
     sumPoints = (solves, challenges) => solves.reduce((a, v) => a + challenges.find(chall => chall.id == v.chall).points, 0)
