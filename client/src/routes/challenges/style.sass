@@ -72,6 +72,10 @@
     white-space: -pre-wrap
     white-space: -o-pre-wrap
     word-wrap: break-word
+  .attempts_warning
+    margin-top: 8px
+    color: $red
+    font-size: 11px
 
 .files_container
   .file_link
@@ -114,17 +118,22 @@
         input, button
           padding: 9px 13px
         input
-          width: 88%
+          width: 82%
           border-top-right-radius: 0
           border-bottom-right-radius: 0
           border-right: none
+          @media (max-width: 768px)
+            width: 80%
         button
-          width: 12%
+          width: 18%
           border-top-left-radius: 0
           border-bottom-left-radius: 0
           border-left: none
           font-size: 12px
           padding: 12px 13px 10px 13px
+          @media (max-width: 768px)
+            width: 20%
+          
 
 .submission_incorrect, .submission_correct, .submission_already_solved
   background: $red
