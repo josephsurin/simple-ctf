@@ -6,7 +6,7 @@ import Loader from '../../components/loader/'
 import ChallengeCard from './challengeCard'
 
 class Challenges extends Component {
-    state = { challenges: null, viewStyle: localStorage.getItem('viewpref') || 'tile' }
+    state = { challenges: null, err: null, viewStyle: localStorage.getItem('viewpref') || 'tile' }
 
     componentDidMount() {
         this.loadData()
@@ -14,7 +14,11 @@ class Challenges extends Component {
 
     loadData = () => {
         apiRequest('/challenges')
-            .then(r => r.challenges.sort((a, b) => a.points - b.points) && this.setState({ challenges: r.challenges }))
+            .then(r => {
+                if(r.err && r.err == 'Game has not started yet.') return this.setState({ err: r.err })
+                r.challenges.sort((a, b) => a.points - b.points)
+                this.setState({ challenges: r.challenges })
+            })
     }
 
     changeViewStyle = (viewStyle) => {
@@ -44,7 +48,15 @@ class Challenges extends Component {
         })
     }
 
-    render(_, { challenges, viewStyle }) {
+    render(_, { challenges, err, viewStyle }) {
+        if(err) return (
+            <div class={style.challenges}>
+                <div class={style.challenges_container}>
+                    <h1>Challenges</h1>
+                    <div class={style.err_msg}>{err}</div>
+                </div>
+            </div>
+        )
         return (
             <div class={style.challenges}>
                 <div class={style.challenges_container}>

@@ -33,6 +33,7 @@ class ChallengeCard extends Component {
             apiRequest('/submit', { method: 'POST', body: JSON.stringify(data) })
                 .then(r => {
                     if(r.msg == 'correct') this.props.onSolve()
+                    if(r.err == 'The game has ended.') return this.setState({ status: 'ended', submitting: false })
                     var numAttemptsLeft = r.numAttemptsLeft == null ? this.state.numAttemptsLeft : r.numAttemptsLeft
                     this.setState({ status: r.msg, numAttemptsLeft, submitting: false })
                 })
@@ -65,7 +66,8 @@ class ChallengeCard extends Component {
                  status === 'correct' ? <div class={style.submission_correct}>Correct!</div> :
                  status === 'already solved' ? <div class={style.submission_already_solved}>Already Solved</div> :
                  status === 'rate limited' ? <div class={style.submission_incorrect}>Submitting too fast. Slow down!</div> :
-                 status === 'max attempts' ? <div class={style.submission_incorrect}>Max Attempts Reached</div> : null}
+                 status === 'max attempts' ? <div class={style.submission_incorrect}>Max Attempts Reached</div> :
+                 status === 'ended' ? <div class={style.submission_incorrect}>The game has ended.</div> : null}
             </div>)
     }
 
