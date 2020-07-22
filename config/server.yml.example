@@ -4,3 +4,7 @@ jwtSecret: "asdf"
 iconUrl: "http://asdf.asdf/asdf.png"
 # max number of members in team (including team leader)
 maxTeamSize: 4
+# CTF start time in milliseconds (unix time)
+startTime: 1596006000000
+# CTF end time in milliseconds (unix time)
+endTime: 1596092400000
