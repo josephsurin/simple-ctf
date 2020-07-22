@@ -6,7 +6,7 @@ const yaml = require('js-yaml')
 const passport = require('passport')
 const NodeCache = require('node-cache')
 const cache = new NodeCache({ stdTTL: 5, useClones: false })
-const { maxTeamSize } = require('./config')
+const { maxTeamSize, startTime, endTime } = require('./config')
 
 const User = require('./models/user')
 const Challenge = require('./models/challenge')
@@ -14,6 +14,24 @@ const Challenge = require('./models/challenge')
 const filesDir = path.join(__dirname, './data/files/')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
+
+const disallowBefore = (req, res, next) => {
+    const now = Date.now()
+    if(now < startTime) {
+        res.status(401).json({ err: 'Game has not started yet.' })
+    } else {
+        next()
+    }
+}
+
+const disallowAfter = (req, res, next) => {
+    const now = Date.now()
+    if(now > endTime) {
+        res.status(401).json({ err: 'The game has ended.' })
+    } else {
+        next()
+    }
+}
 
 const ensureAdmin = (req, res, next) => {
     if(req.user.admin === true) {
@@ -238,4 +256,4 @@ const getProfile = (user) => {
     })
 }
 
-module.exports = { ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, getNumAttempts, submitFlag, hasSolved, addMember, removeMember, getProfile, getLeaderboard }
+module.exports = { disallowBefore, disallowAfter, ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, getNumAttempts, submitFlag, hasSolved, addMember, removeMember, getProfile, getLeaderboard }
