@@ -68,16 +68,15 @@
       @media (max-width: 576px)
         grid-template-columns: 1fr 1fr
         
-// fix thanks tian
+// fix bad description line breaking. thanks tian
 .details
-  word-break: break-all
-  word-wrap: break-word
   pre
     white-space: pre-wrap
     white-space: -moz-pre-wrap
     white-space: -pre-wrap
     white-space: -o-pre-wrap
     word-wrap: break-word
+    word-break: break-all
   .attempts_warning
     margin-top: 8px
     color: $red
