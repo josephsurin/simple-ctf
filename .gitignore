@@ -6,3 +6,4 @@ server/favicon
 config/client.yml
 config/server.yml
 .ssl
+client/index.html
