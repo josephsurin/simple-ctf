@@ -55,12 +55,13 @@ const createDefaultAdminUser = () => {
     }) 
 }
 
-const saveChall = (challPath, category) => {
+const saveChall = (challPath, category, sortIndexMap) => {
     return new Promise(async (res, rej) => {
         try {
             const rawChallData = await fs.readFile(path.join(challPath, 'challenge.yml'))
             const parsedData = yaml.safeLoad(rawChallData)
-            const challData = Object.assign(parsedData, { category })
+            console.log(sortIndexMap, parsedData.id, sortIndexMap[parsedData.id])
+            const challData = Object.assign(parsedData, { category, sortIndex: sortIndexMap[parsedData.id] || 0 })
             // save files to public files static directory
             if(challData.files.length > 0) {
                 if(!existsSync(path.join(filesDir, challData.id))) await fs.mkdir(path.join(filesDir, challData.id))
@@ -81,11 +82,16 @@ const saveChallData = (challDataDir) => {
     // each category directory has challenge directories
     // each challenge directory contains a challenge.yml file
     return new Promise(async (res, rej) => {
-        const categories = await fs.readdir(challDataDir)
+        // get meta.yml file from challDataDir root
+        const metaFile = await fs.readFile(path.join(challDataDir, '/meta.yml'))
+        const { sortIndexMap } = yaml.safeLoad(metaFile)
+
+        var categories = await fs.readdir(challDataDir)
+        categories = categories.filter(c => c != 'meta.yml')
         Promise.all(categories.map(category => {
             return new Promise(async (res, rej) => {
                 const challs = await fs.readdir(path.join(challDataDir, category))
-                Promise.all(challs.map(challDir => saveChall(path.join(challDataDir, category, challDir), category)))
+                Promise.all(challs.map(challDir => saveChall(path.join(challDataDir, category, challDir), category, sortIndexMap)))
                     .then(res)
                     .catch(rej)
             })
