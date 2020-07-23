@@ -16,6 +16,7 @@ const filesDir = path.join(__dirname, './data/files/')
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
 const disallowBefore = (req, res, next) => {
+    if(req.user.admin === true) return next(null, req.user)
     const now = Date.now()
     if(now < startTime) {
         res.status(401).json({ err: 'Game has not started yet.' })
@@ -25,6 +26,7 @@ const disallowBefore = (req, res, next) => {
 }
 
 const disallowAfter = (req, res, next) => {
+    if(req.user.admin === true) return next(null, req.user)
     const now = Date.now()
     if(now > endTime) {
         res.status(401).json({ err: 'The game has ended.' })
