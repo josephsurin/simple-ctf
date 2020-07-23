@@ -16,7 +16,7 @@ class Challenges extends Component {
         apiRequest('/challenges')
             .then(r => {
                 if(r.err && r.err == 'Game has not started yet.') return this.setState({ err: r.err })
-                r.challenges.sort((a, b) => a.points - b.points)
+                r.challenges.sort((a, b) => a.sortIndex - b.sortIndex)
                 this.setState({ challenges: r.challenges })
             })
     }
@@ -30,11 +30,11 @@ class Challenges extends Component {
         challenges.map(c => <ChallengeCard cardStyle="list" data={c} onSolve={this.loadData} />)
     )
 
-    // grouped by category, sorted by number of points  (for now)
+    // grouped by category, sorted by number of sortIndex
     renderTileChallenges = (challenges) => {
         const catMap = groupBy(challenges, x => x.category) 
         return Array.from(catMap.keys(), category => {
-            catMap.get(category).sort((a, b) => a.points - b.points)
+            catMap.get(category).sort((a, b) => a.sortIndex - b.sortIndex)
             return (
             <div class={style.category_container}>
                 <div class={style.category_header}>{category}</div>
