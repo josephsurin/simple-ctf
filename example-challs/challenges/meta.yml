@@ -1,0 +1,10 @@
+sortIndexMap:
+    hard-crypto: -50
+    easy-crypto: -1
+    impossible-crypto: 3
+    lunatic-crypto: 5
+    insane-crypto: 6
+    medium-crypto: 8
+    osint-who: 9
+    easy-stego: 13
+    easy-pwn: 15
