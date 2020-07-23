@@ -57,7 +57,7 @@ class ChallengeCard extends Component {
                 </div>}
                 <div class={style.submission_container}>
                     <form class={style.submission_form} onSubmit={this.submitFlag}>
-                        <input disabled={disabled} class={disabled ? style.disabled : ''} type="text" placeholder="flag" value={submission} onInput={this.onSubmissionChange} />
+                        <input required disabled={disabled} class={disabled ? style.disabled : ''} type="text" placeholder="flag" value={submission} onInput={this.onSubmissionChange} />
                         <button disabled={disabled} class={disabled ? style.disabled : ''} type="submit">Submit</button>
                     </form>
                     {numAttemptsLeft != null ? <div class={style.attempts_warning}>You have {numAttemptsLeft <= 0 ? 0 : numAttemptsLeft} attempts left for this challenge.</div> : null}

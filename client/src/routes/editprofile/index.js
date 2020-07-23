@@ -93,16 +93,16 @@ class EditProfile extends Component {
                         <ul>{members.length == 0 ? <b>none yet!</b> : members.map(member => <li><b>{member} <a onClick={this.removeMember.bind(this, member)}>[X]</a></b></li>)}</ul>
                 </div>
                 <form class={style.email_form} onSubmit={this.onAddMemberSubmit}>
-                    <input type="email" placeholder="add member email" value={memberEmail} required="required" onInput={this.onMemberEmailChange} />
+                    <input type="email" placeholder="add member email" value={memberEmail} required onInput={this.onMemberEmailChange} />
                     <button type="submit">Add Member</button>
                 </form>
                 <form class={style.email_form} onSubmit={this.onChangeEmailSubmit}>
-                    <input type="email" placeholder="new email" value={email} required="required" onInput={this.onEmailChange} />
+                    <input type="email" placeholder="new email" value={email} required onInput={this.onEmailChange} />
                     <button type="submit">Update Email</button>
                 </form>
                 <form class={style.form} onSubmit={this.onChangePasswordSubmit}>
-                    <input type="password" placeholder="old password" value={oldpassword} required="required" onInput={this.onOldPasswordChange} />
-                    <input type="password" placeholder="new password" value={newpassword} required="required" onInput={this.onNewPasswordChange} />
+                    <input type="password" placeholder="old password" value={oldpassword} required onInput={this.onOldPasswordChange} />
+                    <input type="password" placeholder="new password" value={newpassword} required onInput={this.onNewPasswordChange} />
                     <div class={style.submit}><button type="submit">Update Password</button></div>
                 </form>
                 {msg ? <div class={success ? style.success_msg : style.error_msg}>{msg}</div> : null}

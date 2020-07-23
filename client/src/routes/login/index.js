@@ -40,8 +40,8 @@ class Login extends Component {
                 <h1>Login</h1>
                 {msg ? <div class={style.msg}>{msg}</div> : null}
                 <form class={style.form} onSubmit={this.onSubmit}>
-                    <input type="text" placeholder="username" value={username} onInput={this.onUsernameChange} />
-                    <input type="password" placeholder="password" value={password} onInput={this.onPasswordChange} />
+                    <input required type="text" placeholder="username" value={username} onInput={this.onUsernameChange} />
+                    <input required type="password" placeholder="password" value={password} onInput={this.onPasswordChange} />
                     <div class={style.login_button_div + ' ' + (loading ? style.disabled : '')}><button type="submit">Login</button></div>
                 </form>
             </div>
