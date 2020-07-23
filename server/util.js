@@ -60,7 +60,6 @@ const saveChall = (challPath, category, sortIndexMap) => {
         try {
             const rawChallData = await fs.readFile(path.join(challPath, 'challenge.yml'))
             const parsedData = yaml.safeLoad(rawChallData)
-            console.log(sortIndexMap, parsedData.id, sortIndexMap[parsedData.id])
             const challData = Object.assign(parsedData, { category, sortIndex: sortIndexMap[parsedData.id] || 0 })
             // save files to public files static directory
             if(challData.files.length > 0) {
