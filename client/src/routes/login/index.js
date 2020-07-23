@@ -23,8 +23,8 @@ class Login extends Component {
             var data = { username, password }
             apiRequest('/login', { method: 'POST', body: JSON.stringify(data) }, false)
                 .then(r => {
-                    if(r.unauthorized) return this.setState({ msg: 'Invalid username or password' })
-                    if(r.msg && r.msg == 'rate limited') return this.setState({ msg: 'Too many attempts. Please wait a bit.' })
+                    if(r.unauthorized) return this.setState({ msg: 'Invalid username or password', loading: false })
+                    if(r.msg && r.msg == 'rate limited') return this.setState({ msg: 'Too many attempts. Please wait a bit.', loading: false })
                     saveToken(r.token)
                     route('/challenges')
                 }).catch(err => {
