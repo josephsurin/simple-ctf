@@ -4,7 +4,7 @@ import style from './style.sass'
 import { apiRequest } from '../../util'
 
 class EditProfile extends Component {
-    state = { username: '', memberEmail: '', currentEmail: '', email: '', newpassword: '', oldpassword: '', members: [], msg: '', success: null }
+    state = { username: '', newUsername: '', memberEmail: '', currentEmail: '', email: '', newpassword: '', oldpassword: '', members: [], msg: '', success: null }
 
     onMemberEmailChange = e => {
         let { value } = e.target
@@ -24,6 +24,11 @@ class EditProfile extends Component {
     onOldPasswordChange = e => {
         let { value } = e.target
         this.setState({ oldpassword: value })
+    }
+
+    onNewUsernameChange = e => {
+        let { value } = e.target
+        this.setState({ newUsername: value })
     }
     
     onAddMemberSubmit = e => {
@@ -45,6 +50,17 @@ class EditProfile extends Component {
             .then(r => {
                 if(r.err) return this.setState({ msg: r.err, success: false })
                 this.loadData()
+                return this.setState({ msg: r.msg, success: r.msg != 'rate limited' })
+            }).catch(err => console.log('error occurred: ', err))
+        e.preventDefault()
+    }
+
+    onNewUsernameSubmit = e => {
+        let { newUsername } = this.state
+        var data = { newUsername }
+        apiRequest('/changeusername', { method: 'POST', body: JSON.stringify(data) })
+            .then(r => {
+                if(r.err) return this.setState({ msg: r.err, success: false })
                 return this.setState({ msg: r.msg, success: r.msg != 'rate limited' })
             }).catch(err => console.log('error occurred: ', err))
         e.preventDefault()
@@ -82,7 +98,7 @@ class EditProfile extends Component {
             .catch(err => console.log('error occurred: ', err))
     }
 
-    render(_, { username, memberEmail, currentEmail, email, oldpassword, newpassword, members, msg, success }) {
+    render(_, { username, newUsername, memberEmail, currentEmail, email, oldpassword, newpassword, members, msg, success }) {
         return (
             <div class={style.editprofile}>
                 <h1>Edit Profile</h1>
@@ -95,6 +111,11 @@ class EditProfile extends Component {
                 <form class={style.email_form} onSubmit={this.onAddMemberSubmit}>
                     <input type="email" placeholder="add member email" value={memberEmail} required onInput={this.onMemberEmailChange} />
                     <button type="submit">Add Member</button>
+                </form>
+                <form class={style.email_form} onSubmit={this.onNewUsernameSubmit}>
+                    <div style={{ fontSize: "12px" }}>You can only change your username once every 15 minutes</div>
+                    <input type="text" placeholder="new username" value={newUsername} required onInput={this.onNewUsernameChange} />
+                    <button type="submit">Update Name</button>
                 </form>
                 <form class={style.email_form} onSubmit={this.onChangeEmailSubmit}>
                     <input type="email" placeholder="new email" value={email} required onInput={this.onEmailChange} />

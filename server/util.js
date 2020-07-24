@@ -263,4 +263,17 @@ const getProfile = (user) => {
     })
 }
 
-module.exports = { disallowBefore, disallowAfter, ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, getNumAttempts, submitFlag, hasSolved, addMember, removeMember, getProfile, getLeaderboard }
+const changeUsername = (user, newUsername) => {
+    return new Promise(async (res, rej) => {
+        const numchanged = await Challenge.updateMany(
+            { "solves.user": user.username },
+            { $set: { "solves.$[].user": newUsername } },
+        ).catch(err => rej(err))
+        console.log('[+] CHANGED USERNAME CHALL RECORDS', numchanged)
+        user.username = newUsername
+        await user.save().catch(err => rej(err))
+        return res('good')
+    })
+}
+
+module.exports = { disallowBefore, disallowAfter, ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, getNumAttempts, submitFlag, hasSolved, addMember, removeMember, getProfile, getLeaderboard, changeUsername }
