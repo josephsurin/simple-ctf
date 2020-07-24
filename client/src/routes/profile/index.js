@@ -7,7 +7,7 @@ import { apiRequest } from '../../util'
 import Loader from '../../components/loader/'
 
 class Profile extends Component {
-    state = { data: null }
+    state = { data: null, err: null }
 
     componentDidMount() {
         this.loadData()
@@ -22,7 +22,10 @@ class Profile extends Component {
     loadData = () => {
         var username = this.props.username
         apiRequest('/profile' + (username ? '/' + username : ''))
-            .then(data => this.setState({ data }))
+            .then(r => {
+                if(r.err) return this.setState({ err: r.err })
+                this.setState({ data: r, err: null })
+            })
     }
 
     formatSolves = (solves, challenges) => {
@@ -49,8 +52,12 @@ class Profile extends Component {
         )
     }
 
-    render(props, { data }) {
-        console.log(data)
+    render(props, { data, err }) {
+        if(err) return (
+            <div class={style.profile}>
+                <h2>Profile not found</h2>
+            </div>
+        )
         if(!data) return <Loader />
         let { userData, position, solves, challenges } = data
         var totalPoints = this.sumPoints(solves, challenges)
