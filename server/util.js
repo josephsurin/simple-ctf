@@ -256,7 +256,7 @@ const getProfile = (user) => {
             var position = leaderboard.findIndex(({ username }) => username == user.username) + 1
             var challenges = await getChallenges()
             challenges = challenges.map(({ id, title, points, category }) => { return { id, title, points, category } })
-            var userData = { username: user.username, email: user.email }
+            var userData = { username: user.username, email: user.email, eligible: user.eligible }
             return res({ userData, position, solves: user.solves, challenges })
         } catch(e) {
             rej(e)
