@@ -8,12 +8,6 @@ flag: "FLAG{17}"
 points: 20
 
 description: |-
-    crypto is just math...
-
-    ```python
-    flag = "FLAG{" + str(12 + 5) + "}"
-    ```
-
-    Author: me
+    what is `15+2`?
 
 files: []

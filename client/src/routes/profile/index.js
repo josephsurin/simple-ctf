@@ -59,12 +59,12 @@ class Profile extends Component {
             </div>
         )
         if(!data) return <Loader />
-        let { userData, eligible, position, solves, challenges } = data
+        let { userData, position, solves, challenges } = data
         var totalPoints = this.sumPoints(solves, challenges)
         return (
             <div class={style.profile}>
                 <div class={style.username}>{userData.username}</div>
-                <div class={style.position}>{ordinal(position)} place {renderEligibility(eligible, style.eligible)}</div>
+                <div class={style.position}>{ordinal(position)} place {renderEligibility(userData.eligible, style.eligible)}</div>
                 <div class={style.total_points}>{totalPoints} {totalPoints === 1 ? 'point' : 'points'}</div>
                 {props.username ? null : <Link href="/editprofile">Edit Profile</Link>}
                 

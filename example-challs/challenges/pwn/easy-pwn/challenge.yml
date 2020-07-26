@@ -3,15 +3,11 @@ id: easy-pwn
 
 title: Easy PWN
 
-flag: "FLAG{easy!!!}"
+flag: "FLAG{test}"
 
 points: 1
 
 description: |-
-    pwn is just buffer overflows...
-
-    `nc 185.112.42.164 1337`
-
-    Author: me
+    test description
 
 files: ['./easypwn']

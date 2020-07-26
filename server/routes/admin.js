@@ -6,6 +6,7 @@ const tar = require('tar')
 const multer = require('multer')
 const rimraf = require('rimraf')
 const { ensureAuthenticated, ensureAdmin, saveChallData, setEligibility } = require('../util')
+const User = require('../models/user')
 
 const dataDir = path.join(__dirname, '../data')
 const upload = multer({ dest: dataDir })
@@ -36,6 +37,24 @@ router.post('/setEligibility', (req, res) => {
     setEligibility(req.body.username, req.body.eligibility)
         .then(msg => res.json({ msg }))
         .catch(err => res.json({ err }))
+})
+
+router.post('/setPassword', (req, res) => {
+    if(!req.body.username) return res.json({ err: 'Missing field "username"' })
+    if(!req.body.password) return res.json({ err: 'Missing field "password"' })
+    User.find({ username: req.body.username })    
+        .then(async (user) => {
+            const a = await user.setPassword(req.body.password)
+            console.log(a)
+            const s = await user.save()
+            console.log(s)
+            console.log('[*] set password', s)
+            return res.json({ msg: "Success" })
+        })
+        .catch(err => {
+            console.log('help', err)
+            return res.json({ err })
+        })
 })
 
 module.exports = router
