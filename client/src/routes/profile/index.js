@@ -3,7 +3,7 @@ import { Link } from 'preact-router'
 import ordinal from 'ordinal'
 import style from './style.sass'
 
-import { apiRequest } from '../../util'
+import { apiRequest, renderEligibility } from '../../util'
 import Loader from '../../components/loader/'
 
 class Profile extends Component {
@@ -59,12 +59,12 @@ class Profile extends Component {
             </div>
         )
         if(!data) return <Loader />
-        let { userData, position, solves, challenges } = data
+        let { userData, eligible, position, solves, challenges } = data
         var totalPoints = this.sumPoints(solves, challenges)
         return (
             <div class={style.profile}>
                 <div class={style.username}>{userData.username}</div>
-                <div class={style.position}>{ordinal(position)} place</div>
+                <div class={style.position}>{ordinal(position)} place {renderEligibility(eligible, style.eligible)}</div>
                 <div class={style.total_points}>{totalPoints} {totalPoints === 1 ? 'point' : 'points'}</div>
                 {props.username ? null : <Link href="/editprofile">Edit Profile</Link>}
                 

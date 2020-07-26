@@ -181,10 +181,11 @@ const getLeaderboard = () => {
             const challData = await Challenge.find({}, { _id: 0, id: 1, points: 1 })
             const challMap = {}
             challData.forEach(c => challMap[c.id] = c)
-            var allUserSolves = await User.find({}, { _id: 0, username: 1, solves: 1 })
+            var allUserSolves = await User.find({}, { _id: 0, username: 1, solves: 1, eligible: 1 })
             allUserSolves = allUserSolves.map(u => {
                 return {
                     username: u.username,
+                    eligible: u.eligible,
                     points: getTotalPoints(u, challMap),
                     lastSolve: Math.max(...u.solves.map(({ time }) => new Date(time).getTime()))
                 }
@@ -276,4 +277,16 @@ const changeUsername = (user, newUsername) => {
     })
 }
 
-module.exports = { disallowBefore, disallowAfter, ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, getNumAttempts, submitFlag, hasSolved, addMember, removeMember, getProfile, getLeaderboard, changeUsername }
+const setEligibility = (username, eligibility) => {
+    return new Promise(async (res, rej) => {
+        const numchanged = await User.findOneAndUpdate(
+            { username },
+            { $set: { eligible: eligibility } },
+            { useFindAndModify: false }
+        ).catch(err => rej('Invalid argument ' + err))
+        if(!numchanged) return rej('Invalid User, numchanged: ' + JSON.stringify(numchanged))
+        res('Success')
+    })
+}
+
+module.exports = { disallowBefore, disallowAfter, ensureAuthenticated, ensureAdmin, createDefaultAdminUser, saveChallData, getChallenges, getNumAttempts, submitFlag, hasSolved, addMember, removeMember, getProfile, getLeaderboard, changeUsername, setEligibility }

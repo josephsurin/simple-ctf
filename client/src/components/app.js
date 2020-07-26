@@ -1,5 +1,8 @@
 import { h, Component } from 'preact'
 import { Router } from 'preact-router'
+import ReactHintFactory from 'react-hint'
+const ReactHint = ReactHintFactory({ createElement: h, Component })
+import 'react-hint/css/index.css'
 
 import { isLoggedIn } from '../util'
 
@@ -42,6 +45,7 @@ export default class App extends Component {
         var paths = isLoggedIn() ? this.loggedInPaths : this.loggedOutPaths
 		return (
 			<div id="app">
+                <ReactHint autoPosition events />
 				<Header paths={paths}/>
 				<Router onChange={this.handleRoute}>
                     <Home path="/" />

@@ -1,6 +1,9 @@
 title: 'Simple CTF'
 description: 'Simple CTF'
 
+# whether or not to display eligibility status on scoreboard and profile
+displayEligibility: true
+ 
 # content to display on the home page. markdown is supported
 homePage: |-
     Stuff to be display at /home

@@ -2,7 +2,7 @@ import { h, Component } from 'preact'
 import { Link } from 'preact-router'
 import style from './style.sass'
 
-import { apiRequest } from '../../util'
+import { apiRequest, renderEligibility } from '../../util'
 import Loader from '../../components/loader/'
 
 class Scoreboard extends Component {
@@ -31,10 +31,10 @@ class Scoreboard extends Component {
                     <th>Points</th>
                     <th>Last Solve</th>
                 </tr>
-            {standings.map(({ username, points, lastSolve }, i) => 
+            {standings.map(({ username, eligible, points, lastSolve }, i) => 
                 <tr>
                     <td>{offset + i + 1}</td>
-                    <td><Link href={'/profile/' + username}>{username}</Link></td>
+                    <td>{renderEligibility(eligible, style.eligible)}<Link href={'/profile/' + username}>{username}</Link></td>
                     <td>{points}</td>
                     <td>{lastSolve ? new Date(lastSolve).toLocaleString() : '-'}</td>
                 </tr>
@@ -54,7 +54,6 @@ class Scoreboard extends Component {
     }
 
     render(_, { standings, offset, page, numPages }) {
-        console.log(standings, offset)
         if(!standings) return <Loader />
         return (
             <div class={style.scoreboard}>

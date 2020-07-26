@@ -44,6 +44,7 @@
     "preact": "^10.4.5",
     "preact-cli": "^3.0.0-rc.14",
     "preact-router": "^3.2.1",
+    "react-hint": "^3.2.0",
     "sass-loader": "7.3.1"
   }
 }

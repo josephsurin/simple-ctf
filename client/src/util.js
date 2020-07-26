@@ -1,7 +1,7 @@
 import path from 'path'
 import { route } from 'preact-router'
 import config from '../config'
-const { apiEndpoint, staticFileRoot } = config
+const { apiEndpoint, staticFileRoot, displayEligibility } = config
 
 export const apiRequest = (endpoint, reqOpts, redirect='/login') => {
     var authHeader = getToken() ? { 'Authorization' : 'Bearer ' + getToken() } : {}
@@ -49,4 +49,9 @@ export const groupBy = (list, keyGetter) => {
         else collection.push(item)
     })
     return map
+}
+
+export const renderEligibility = (eligible, className) => {
+    if(!displayEligibility || !eligible) return null
+    return <span className={className} data-rh="Eligible for prizes">✓</span>
 }
