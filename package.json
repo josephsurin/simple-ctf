@@ -39,7 +39,7 @@
     "dompurify": "^2.0.12",
     "markdown-it": "^11.0.0",
     "mustache": "^4.0.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "ordinal": "^1.0.3",
     "preact": "^10.4.5",
     "preact-cli": "^3.0.0-rc.14",
